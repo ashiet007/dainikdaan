@@ -1,0 +1,21 @@
+/* your styles go here */
+.text-uppercase {
+    letter-spacing: 0.0em;
+}
+.news-content{
+    color: #fff;
+}
+.banner{
+    max-height: 400px;
+}
+.banner-text {
+    padding-top: 120px;
+}
+
+.text-gray {
+    color: #212529;
+}
+
+.text-muted {
+    color: #212529!important;
+}
