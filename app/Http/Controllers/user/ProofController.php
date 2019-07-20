@@ -42,7 +42,8 @@ class ProofController extends Controller
             $getHelpID = $requestData['get_help_id'];
             $giveHelp->getHelps()->updateExistingPivot($getHelpID, ['proof_file_name' => $uploadFile]);
           }
-         return redirect()->back()->with('flash_message', 'Proof Uploaded');
+         alert()->success('Proof Uploaded', 'Success')->persistent("Close");
+         return redirect()->back();
         
     }
 

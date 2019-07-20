@@ -7,10 +7,10 @@
         <div class="row admin">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header font-weight-bold text-center text-uppercase">Total Downline</div>
+                    <div class="card-header font-weight-bold text-center text-uppercase">Total Direct Team</div>
                     <div class="card-body">
                         <div class="container">
-                            {!! Form::open(['method' => 'GET', 'url' => '/admin/downline/total-downline', 'class' => 'form-inline my-2 my-lg-0 float-right','role' => 'search'])  !!}
+                            {!! Form::open(['method' => 'GET', 'url' => '/admin/downline/total-direct-team', 'class' => 'form-inline my-2 my-lg-0 float-right','role' => 'search'])  !!}
                             <div class="form-group">
                                 {!! Form::label('user_name', 'User_name', ['class' => 'col-md-4 control-label font-weight-bold']) !!}
                                 <div class="col-md-8">
@@ -32,31 +32,25 @@
                                 <tr>
                                     <th>Sr. No.</th>
                                     <th>Name</th>
-                                    <th>Email</th>
                                     <th>Mobile Number</th>
                                     <th>Date of Joining</th>
                                     <th>Sponsor ID</th>
-                                    <th></th>
                                 </tr>
                                 </thead>
+                                <tbody>
                                 @if(!is_null($teamDetails))
                                     @foreach($teamDetails as $teamDetail)
-                                        <tbody>
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $teamDetail->name }}</td>
-                                            <td>{{ $teamDetail->email }}</td>
                                             <td>{{ $teamDetail->userDetails->mob_no }}</td>
                                             <td>{{ $teamDetail->created_at->format('d, M Y h:i:s A') }}</td>
                                             <td>{{ $teamDetail->sponsor_id }}</td>
                                         </tr>
-                                        </tbody>
                                     @endforeach
                                 @endif
+                                </tbody>
                             </table>
-                            @if(!is_null($teamDetails))
-                                <div class="pagination"> {!! $teamDetails->appends(['user_name' => Request::get('user_name')])->render() !!} </div>
-                            @endif
                         </div>
                     </div>
                 </div>

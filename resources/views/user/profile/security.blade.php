@@ -3,7 +3,7 @@
 @section('content')
     <section class="py-5 col-md-12">
         <div class="container-fluid">
-            <div class="container">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header text-center">
                         <h2 class="h6 text-uppercase mb-0">Security</h2>

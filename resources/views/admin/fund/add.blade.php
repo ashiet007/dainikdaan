@@ -14,7 +14,7 @@
                             <div class="form-group">
                                 <label class="control-label">User</label>
                                 <div class="col-md-8">
-                                    <select class="form-control" name="user_id" required>
+                                    <select class="form-control js-example-basic-single" name="user_id" required>
                                         <option>--Select User--</option>
                                         @foreach($users as $user)
                                         <option value="{{$user->id}}">{{$user->name}}({{$user->user_name}})</option>

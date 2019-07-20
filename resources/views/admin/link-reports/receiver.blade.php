@@ -3,13 +3,13 @@
 @section('content')
     <section class="py-5 col-md-12">
         <div class="container-fluid">
-            <div class="container">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header text-center">
                         <h2 class="h6 text-uppercase mb-0">Receiver List</h2>
                     </div>
                     <div class="card-body">
-                        <div class="table table-responsive">
+                        <div class="table-responsive">
                             <table class="table">
                                 <thead>
                                 <tr>
@@ -39,12 +39,12 @@
                                         <td>{{$user->created_at->format('d, M Y h:i:s A')}}</td>
                                         <td>{{$user->match_order_date}}</td>
                                         <!-- Button to Open the Modal -->
-                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal{{$user->id}}">
                                             Change Order
                                         </button></td>
 
                                         <!-- The Modal -->
-                                        <div class="modal" id="myModal">
+                                        <div class="modal" id="myModal{{$user->id}}">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
 

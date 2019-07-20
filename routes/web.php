@@ -11,40 +11,25 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/home', function () {
-    return view('message');
-})->middleware('auth');
+Route::get('/','HomeController@index')->name('home.index');
+Route::get('/contact','HomeController@contact')->name('home.contact');
+Route::get('/home', 'HomeController@index')->name('home.index');
 Route::get('about','HomeController@about')->name('home.about');
 Route::get('plan','HomeController@plan')->name('home.plan');
-Route::get('contact','HomeController@contact')->name('home.contact');
 Route::post('contact/store','ContactController@store')->name('contact.storeQuery');
-// Auth::routes();
-// Authentication Routes...
 
-Route::post('send-otp','HomeController@sendOtp')->name('home.sendOtp');
-Route::post('verify-otp','HomeController@verifyOtp')->name('home.verifyOtp');
-Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
-Route::post('login', 'Auth\LoginController@login');
+/* ********* Auth Routes ********** */
+Route::get('login','LoginController@showLoginForm')->name('login');
+Route::post('login','LoginController@authenticate')->name('login.authenticate');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
-
-// Registration Routes...
-Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register.showRegistrationForm');
-Route::post('register', 'Auth\RegisterController@register')->name('register.register');
-
-// Password Reset Routes...
+Route::get('register','RegisterController@showRegistrationForm')->name('register');
+Route::post('get-districts','RegisterController@getDistricts')->name('register.getDistricts');
+Route::post('send-otp','RegisterController@sendOtp')->name('register.sendOtp');
+Route::post('verify-otp','RegisterController@verifyOtp')->name('register.verifyOtp');
+Route::post('getSponsorDetails','RegisterController@getSponsorDetails')->name('register.getSponsorDetails');
+Route::post('register', 'RegisterController@create')->name('register.create');
 Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
-Route::post('password/mobile-verification', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-Route::post('password/verify-otp', 'Auth\ForgotPasswordController@verifyOtp')->name('password.verifyOtp');
-Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-Route::post('password/reset', 'Auth\ResetPasswordController@reset');
-Route::post('get-districts','HomeController@getDistricts')->name('home.getDistricts');
-Route::post('getSponsorDetails','HomeController@getSponsorDetails')->name('home.getSponsorDetails');
-// Authentication Routes Ends Here
-
-Route::get('remote-validateion','ValidationController@remoteValidation')->name('validation.remote');
+Route::post('password/reset', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
 
 //******************* User Routes **********************//
 Route::group(['prefix' => 'user', 'middleware' => ['auth', 'roles','status'], 'roles' => 'User'], function () {
@@ -61,7 +46,9 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth', 'roles','status'], 'r
     Route::get('get-help-reports','user\ReportController@receiveHelpReport')->name('report.receiveHelpReport');
     Route::get('rejected-help-reports','user\ReportController@rejectedHelpReport')->name('report.rejectedHelpReport');
     Route::get('income','user\IncomeController@directIncome')->name('income.direct');
+    Route::get('income/daily-growth','user\IncomeController@dailyGrowth')->name('income.dailyGrowth');
     Route::post('income-widhrawal','user\IncomeController@workingWithrawal')->name('income.workingWithrawal');
+    Route::post('fund-transfer','user\IncomeController@fundTransfer')->name('income.fundTransfer');
     Route::post('upload-proof','user\ProofController@uploadProof')->name('proof.uploadProof');
     Route::post('reject-help','user\UserController@rejectHelp')->name('user.rejectHelp');
     Route::post('accept-help','user\UserController@acceptHelp')->name('user.acceptHelp');
@@ -72,9 +59,9 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth', 'roles','status'], 'r
 //******************************************************//
 
 //******************************************************//
-  Route::get('help-matching','CronController@helpMatching');
-  Route::get('user-status-update','CronController@userStatusUpdate');
-  Route::get('access-denied','HomeController@block');
+Route::get('help-matching','CronController@helpMatching');
+Route::get('user-status-update','CronController@userStatusUpdate');
+Route::get('access-denied','HomeController@block');
 //******************************************************//
 
 //******************* Admin Routes **********************//
@@ -112,6 +99,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
     Route::get('link-reports/pending-link','admin\LinkReportController@pendingLink' )->name('linkReport.pendingLink');
     Route::get('link-reports/senders-list','admin\LinkReportController@sendersList' )->name('linkReport.sendersList');
     Route::get('link-reports/receivers-list','admin\LinkReportController@receiverList' )->name('linkReport.receiverList');
+    Route::get('link-reports/partially-received-receivers','admin\LinkReportController@partial' )->name('linkReport.partial');
     Route::post('delete-link','admin\LinkReportController@deleteLink' )->name('linkReport.deleteLink');
     Route::get('actions','admin\ActionController@index')->name('action.index');
     Route::get('actions/status-change','admin\ActionController@adminAction')->name('action.adminAction');
@@ -122,6 +110,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
     Route::get('added-user-fund','admin\FundController@fundList')->name('fund.fundList');
     Route::post('change-order','admin\LinkReportController@changeOrder')->name('link.changeOrder');
     Route::post('change-order-give-help','admin\LinkReportController@changeOrderGive')->name('link.changeOrderGive');
+    Route::post('put-details-on-hold','admin\ActionController@putDetailOnHold')->name('action.putDetailOnHold');
+    Route::post('remove-details-on-hold','admin\ActionController@removeDetailOnHold')->name('action.removeDetailOnHold');
 });
 //******************************************************//
-

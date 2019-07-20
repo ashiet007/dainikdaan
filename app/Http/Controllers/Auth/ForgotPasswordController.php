@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\User;
 use App\UserDetail;
 use App\UserPassword;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
@@ -42,24 +42,27 @@ class ForgotPasswordController extends Controller
                 {
                     $password = $userPassword->password;
                     $number = $userDetails->mob_no;
-                    $message = 'WELCOME FOR AGAIN LOGIN YOUR ID-'.$username.' AND PASSWORD IS-'.$password.', WWW.DAINIKDAAN.IN THANKS.';
+                    $message = 'OUR MAGIC PARTNER YOUR LOGIN ID- '.$username.' AND PASSWORD IS-'.$password.' , WWW.MAGICBANDHAN.COM THANKS.';
                     sendMessage($number,$message);
 
-                    return redirect()->back()->with('status','DEAR PARTNER YOUR USER NAME AND PASSWORD HAS BEEN SENT ON YOUR REGISTERED MOBILE NUMBER,PLEASE CHECK FOR LOGIN THANKS.');
+                    return redirect()->back()->with('status','DEAR MAGIC PARTNER YOUR ID AND PASSWORD HAS BEEN SENT ON YOUR REGISTERED MOBILE NUMBER,PLEASE CHECK INBOX SMS FOR LOGIN THANKS.');
                 }
                 else
                 {
-                    return redirect()->back()->with('flash_message','Something went wrong, Contact Administrator.');
+                    alert()->error('Something went wrong', 'Error')->persistent("Close");
+                    return redirect()->back();
                 }
             }
             else
             {
-                return redirect()->back()->with('flash_message','Username is invalid');
+                alert()->error('Username is invalid!!!', 'Error')->persistent("Close");
+                return redirect()->back();
             }
         }
         else
         {
-            return redirect()->back()->with('flash_message','Please provide valid username');
+            alert()->error('Please provide valid username!!!', 'Error')->persistent("Close");
+            return redirect()->back();
         }
 
     }
@@ -68,7 +71,6 @@ class ForgotPasswordController extends Controller
     {
         $this->validate($request, ['user_name' => 'required|exists:users,user_name']);
     }
-
     /**
      * Create a new controller instance.
      *

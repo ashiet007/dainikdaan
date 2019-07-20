@@ -16,41 +16,26 @@
                                     <th>Sr. No.</th>
                                     <th>Sender Username</th>
                                     <th>Sender Name</th>
-                                    <th>Sender Email</th>
                                     <th>Amount</th>
                                     <th>Receiver Username</th>
                                     <th>Receiver Name</th>
-                                    <th>Receiver Email</th>
                                     <th>Created Date</th>
                                 </tr>
                                 </thead>
-                                @php
-                                    $count = 1;
-                                @endphp
-                                @foreach($pendingLinks as $pendingLink)
-                                    @if(!$pendingLink->getHelps->isEmpty())
-                                        <tbody>
-                                        @foreach($pendingLink->getHelps as $getHelp)
-                                            <tr>
-                                                <td>{{ $count }}</td>
-                                                <td>{{ $pendingLink->user->user_name }}</td>
-                                                <td>{{ $pendingLink->user->name }}</td>
-                                                <td>{{ $pendingLink->user->email }}</td>
-                                                <td>{{ $getHelp->pivot->assigned_amount }}</td>
-                                                <td>{{ $getHelp->user->user_name }}</td>
-                                                <td>{{ $getHelp->user->name }}</td>
-                                                <td>{{ $getHelp->user->email }}</td>
-                                                <td>{{ $getHelp->pivot->created_at->format('d, M Y h:i:s A') }}</td>
-                                            </tr>
-                                            @php
-                                                $count = $count + 1;
-                                            @endphp
-                                        @endforeach
-                                        </tbody>
-                                    @endif
+                                <tbody>
+                                @foreach($pendingData as $data)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $data['user_name'] }}</td>
+                                        <td>{{ $data['name'] }}</td>
+                                        <td>{{ $data['amount'] }}</td>
+                                        <td>{{ $data['rc_user_name'] }}</td>
+                                        <td>{{ $data['rc_name'] }}</td>
+                                        <td>{{ $data['created_date'] }}</td>
+                                    </tr>
                                 @endforeach
+                                </tbody>
                             </table>
-                            <div class="pagination"> {!! $pendingLinks->appends(['search' => Request::get('search')])->render() !!} </div>
                         </div>
                     </div>
                 </div>

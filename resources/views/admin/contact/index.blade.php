@@ -1,23 +1,12 @@
 @extends('layouts.backend')
 @section('content')
+<section class="py-5 col-md-12">
 <div class="container-fluid">
     <div class="row admin">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header font-weight-bold text-center text-uppercase">Contacts</div>
                 <div class="card-body">
-                    {!! Form::open(['method' => 'GET', 'url' => '/admin/contact', 'class' => 'form-inline my-2 my-lg-0 float-right', 'role' => 'search'])  !!}
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ request('search') }}">
-                        <span class="input-group-append">
-                            <button class="btn btn-secondary" type="submit">
-                            <i class="fa fa-search"></i>
-                            </button>
-                        </span>
-                    </div>
-                    {!! Form::close() !!}
-                    <br/>
-                    <br/>
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
@@ -28,7 +17,7 @@
                             <tbody>
                                 @foreach($contact as $item)
                                 <tr>
-                                    <td>{{ $loop->iteration or $item->id }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->name }}</td><td>{{ $item->email }}</td><td>{{ $item->message }}</td><td>{{ $item->created_at }}</td>
                                     <td>
                                         <a href="{{ url('/admin/contact/' . $item->id) }}" title="View Contact"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
@@ -56,4 +45,5 @@
         </div>
     </div>
 </div>
+</section>
 @endsection

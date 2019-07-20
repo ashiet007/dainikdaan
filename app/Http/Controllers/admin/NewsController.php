@@ -110,8 +110,8 @@ class NewsController extends Controller
         
         $news = News::findOrFail($id);
         $news->update($requestData);
-
-        return redirect('admin/news')->with('flash_message', 'News updated!');
+        alert()->success('News updated!', 'Success')->persistent("Close");
+        return redirect('admin/news');
     }
 
     /**

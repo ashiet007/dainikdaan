@@ -1,87 +1,142 @@
 @extends('layouts.app')
 @section('content')
-    <!-- banner -->
-    <div class="inner-banner">
-    @include('partials.homeNav')
-        <!-- //header -->
 
+    <!-- ##### Breadcumb Area Start ##### -->
+    <section class="breadcumb-area bg-img d-flex align-items-center justify-content-center" style="background-image: url('images/bg-img/bg-3.jpg');">
+        <div class="bradcumbContent">
+            <h2>About us</h2>
+        </div>
+    </section>
+    <!-- ##### Breadcumb Area End ##### -->
+
+    <!-- ##### Book Now Area Start ##### -->
+    <div class="book-now-area">
     </div>
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-            <a href="index.html">Home</a>
-        </li>
-        <li class="breadcrumb-item active">About</li>
-    </ol>
-    <!-- //banner-text -->
-    <section class="banner_bottom1 py-md-5">
-        <div class="container py-4 mt-2">
-            <h3 class="heading-agileinfo text-center">About  <span>Us</span></h3>
-            <div class="inner_sec_info_wthree_agile mt-md-5 pt-3">
-                <div class="row help_full">
-                    <div class="col-lg-6 banner_bottom_grid help">
-                        <img src="{{asset('images/about.jpg')}}" alt=" " class="img-fluid">
-                    </div>
-                    <div class="col-lg-6 banner_bottom_left1">
-                        <h4>Lorem Ipsum convallis diam</h4>
-                        <p>Pellentesque convallis diam consequat magna vulputate malesuada. Cras a ornare elit. Nulla viverra pharetra sem, eget
-                            pulvinar neque pharetra ac.</p>
-                        <p>Lorem Ipsum convallis diam consequat magna vulputate malesuada. Cras a ornare elit. Nulla viverra pharetra sem, eget
-                            pulvinar neque pharetra ac.Nullal condimentum interdum vel eget enim. Curabitur mattis orci sed le. Nullal condimentum interdum vel eget enim. Curabitur mattis orci sed le.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- ##### Book Now Area End ##### -->
 
-    <!-- choose -->
-    <section class="choose py-5">
-        <div class="container py-md-4 mt-md-3">
-            <div class="row inner_w3l_agile_grids-1 ">
-                <div class="col-lg-6 w3layouts_choose_left_grid1">
-                    <div class="choose_top">
-                        <h4 class="mb-3 mt-3 text-white">Feel Free to Contact Our Agents Directly</h4>
-                        <p class="text-white">Nulla pellentesque mi non laoreet eleifend. Integer porttitor mollisar lorem, at molestie arcu pulvinar ut. Proin ac fermentum est. Cras mi ipsum, consectetur ac ipsum in, egestas vestibulum tellus.Proin ac fermentum est. Cras mi ipsum, consectetur ac ipsum in, egestas vestibulum tellus.</p>
-                        <a href="services.html" class="btn btn-primary mt-3">Read More</a>
+    <!-- ##### About Us Area Start ##### -->
+    <section class="about-us-area">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-6">
+                    <div class="about-text mb-100">
+                        <div class="section-heading">
+                            <div class="line-"></div>
+                            <h2>A bandhan to remember</h2>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
+                        <a href="#" class="btn palatin-btn mt-50">Read More</a>
                     </div>
                 </div>
-                <div class="col-lg-6 w3layouts_choose_left_grid2">
-                    <div class="row">
-                        <div class="col-md-6 w3l_choose_bottom1 mt-3 pt-md-4">
-                            <div class="choose_bottom_top">
-                                <span class="fa fa-gift mb-2"></span>
-                                <h5 class="card-title text-uppercase my-3">Weddings</h5>
-                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing.
-                                </p>
-                            </div>
+
+                <div class="col-12 col-lg-6">
+                    <div class="about-thumbnail mb-100">
+                        <img src="{{asset('images/bg-img/2.jpg')}}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### About Us Area End ##### -->
+
+    <!-- ##### Milestones Area Start ##### -->
+    <section class="our-milestones section-padding-100-0 bg-img bg-overlay bg-fixed" style="background-image: url('images/bg-img/bg-4.jpg');">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-8">
+                    <div class="section-heading text-center white">
+                        <div class="line-"></div>
+                        <h2>Our Milestones</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <!-- Single Cool Facts -->
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="single-cool-fact mb-100 wow fadeInUp" data-wow-delay="300ms">
+                        <div class="scf-text">
+                            <i class="icon-cocktail-1"></i>
+                            <h2><span class="counter">231</span></h2>
+                            <p>Cocktails/day</p>
                         </div>
-                        <div class="col-md-6 w3l_choose_bottom2">
-                            <div class="choose_bottom_top">
-                                <span class="fa fa-cutlery mb-2"></span>
-                                <h5 class="card-title text-uppercase my-3">Parties</h5>
-                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing.
-                                </p>
-                            </div>
+                    </div>
+                </div>
+
+                <!-- Single Cool Facts -->
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="single-cool-fact mb-100 wow fadeInUp" data-wow-delay="500ms">
+                        <div class="scf-text">
+                            <i class="icon-swimming-pool"></i>
+                            <h2><span class="counter">3</span></h2>
+                            <p>Pools</p>
                         </div>
-                        <div class="col-md-6 w3l_choose_bottom3 mt-3 pt-md-4">
-                            <div class="choose_bottom_top">
-                                <span class="fa fa-music mb-2"></span>
-                                <h5 class="card-title text-uppercase my-3">Entertainment</h5>
-                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing.
-                                </p>
-                            </div>
+                    </div>
+                </div>
+
+                <!-- Single Cool Facts -->
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="single-cool-fact mb-100 wow fadeInUp" data-wow-delay="700ms">
+                        <div class="scf-text">
+                            <i class="icon-resort"></i>
+                            <h2><span class="counter">79</span></h2>
+                            <p>Rooms</p>
                         </div>
-                        <div class="col-md-6 w3l_choose_bottom4">
-                            <div class="choose_bottom_top">
-                                <span class="fa fa-glass mb-2"></span>
-                                <h5 class="card-title text-uppercase my-3">Celebrations</h5>
-                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing.
-                                </p>
+                    </div>
+                </div>
+
+                <!-- Single Cool Facts -->
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="single-cool-fact mb-100 wow fadeInUp" data-wow-delay="900ms">
+                        <div class="scf-text">
+                            <i class="icon-restaurant"></i>
+                            <h2><span class="counter">25</span></h2>
+                            <p>Apartments</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- ##### Milestones Area End ##### -->
+
+    <!-- ##### Testimonial Area Start ##### -->
+    <section class="testimonial-area section-padding-100 bg-img" style="background-image: url('images/core-img/pattern.png);">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="testimonial-content">
+                        <div class="section-heading text-center">
+                            <div class="line-"></div>
+                            <h2>What Clients Say</h2>
+                        </div>
+
+                        <!-- Testimonial Slides -->
+                        <div class="testimonial-slides owl-carousel">
+
+                            <!-- Single Testimonial -->
+                            <div class="single-testimonial">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
+                                <h6>Michael Smith, <span>Client</span></h6>
+                                <img src="{{asset('images/core-img/trip.png')}}" alt="">
                             </div>
+
+                            <!-- Single Testimonial -->
+                            <div class="single-testimonial">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus.</p>
+                                <h6>Nazrul Islam, <span>Developer</span></h6>
+                                <img src="{{asset('images/core-img/trip.png')}}" alt="">
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- //choose -->
+    <!-- ##### Testimonial Area End ##### -->
+
 @endsection

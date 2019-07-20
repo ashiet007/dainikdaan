@@ -47,31 +47,25 @@
                                 <tr>
                                     <th>Sr. No.</th>
                                     <th>Name</th>
-                                    <th>Email</th>
                                     <th>Mobile Number</th>
                                     <th>Date of Joining</th>
                                     <th>Sponsor ID</th>
-                                    <th></th>
                                 </tr>
                                 </thead>
+                                <tbody>
                                 @if(!is_null($users))
                                     @foreach($users as $user)
-                                        <tbody>
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $user->name }}</td>
-                                            <td>{{ $user->email }}</td>
                                             <td>{{ $user->userDetails->mob_no }}</td>
                                             <td>{{ $user->created_at->format('d, M Y h:i:s A') }}</td>
                                             <td>{{ $user->sponsor_id }}</td>
                                         </tr>
-                                        </tbody>
                                     @endforeach
                                 @endif
+                                </tbody>
                             </table>
-                            @if(!is_null($users))
-                                <div class="pagination"> {!! $users->appends(['start_date' => Request::get('start_date'), 'end_date' => Request::get('end_date')])->render() !!} </div>
-                            @endif
                         </div>
                     </div>
                 </div>

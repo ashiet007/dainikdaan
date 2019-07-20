@@ -3,13 +3,13 @@
 @section('content')
     <section class="py-5 col-md-12">
         <div class="container-fluid">
-            <div class="container">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header text-center">
-                        <h2 class="h6 text-uppercase mb-0">Active User</h2>
+                        <h2 class="h6 text-uppercase mb-0">Active List</h2>
                     </div>
                     <div class="card-body">
-                        <div class="table table-responsive">
+                        <div class="table-responsive">
                             <table class="table">
                                 <thead>
                                 <tr>
@@ -26,19 +26,17 @@
                                     $i = 1;
                                 @endphp
                                 @foreach($activeUsers as $activeUser)
-                                    @if(!$activeUser->giveHelps->isEmpty())
-                                        <tr>
-                                            <td>{{$i}}</td>
-                                            <td>{{$activeUser->user_name}}</td>
-                                            <td>{{$activeUser->name}}</td>
-                                            <td>{{$activeUser->userDetails->mob_no}}</td>
-                                            <td>{{$activeUser->userDetails->userState->name}}</td>
-                                            <td>{{$activeUser->userDetails->userDistrict->name}}</td>
-                                        </tr>
-                                        @php
-                                        $i =$i+1;
-                                        @endphp
-                                    @endif
+                                <tr>
+                                    <td>{{$i}}</td>
+                                    <td>{{$activeUser->user_name}}</td>
+                                    <td>{{$activeUser->name}}</td>
+                                    <td>{{$activeUser->userDetails->mob_no}}</td>
+                                    <td>{{$activeUser->userDetails->userState->name}}</td>
+                                    <td>{{$activeUser->userDetails->userDistrict->name}}</td>
+                                </tr>
+                                @php
+                                $i =$i+1;
+                                @endphp
                                 @endforeach
                                 </tbody>
                             </table>

@@ -13,7 +13,9 @@
         "guzzlehttp/guzzle": "~6.0",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
-        "laravelcollective/html": "^5.8"
+        "laravelcollective/html": "^5.8",
+        "uxweb/sweet-alert": "^2.0",
+        "proengsoft/laravel-jsvalidation": ">2.2.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -62,6 +64,9 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "post-update-cmd": [
+            "php artisan vendor:publish --provider=\"Proengsoft\\JsValidation\\JsValidationServiceProvider\" --tag=public --force"
         ]
     }
 }

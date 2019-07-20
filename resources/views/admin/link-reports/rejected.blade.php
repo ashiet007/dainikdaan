@@ -33,50 +33,35 @@
                                     <th>Sr. No.</th>
                                     <th>Sender Username</th>
                                     <th>Sender Name</th>
-                                    <th>Sender Email</th>
                                     <th>Amount</th>
                                     <th>Receiver Username</th>
                                     <th>Receiver Name</th>
-                                    <th>Receiver Email</th>
                                     <th>Rejected Date</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
-                                @php
-                                    $count = 1;
-                                @endphp
-                                @foreach($rejectedLinks as $rejectedLink)
-                                    @if(!$rejectedLink->getHelps->isEmpty())
-                                        <tbody>
-                                        @foreach($rejectedLink->getHelps as $getHelp)
-                                            <tr>
-                                                <td>{{ $count }}</td>
-                                                <td>{{ $rejectedLink->user->user_name }}</td>
-                                                <td>{{ $rejectedLink->user->name }}</td>
-                                                <td>{{ $rejectedLink->user->email }}</td>
-                                                <td>{{ $getHelp->pivot->assigned_amount }}</td>
-                                                <td>{{ $getHelp->user->user_name }}</td>
-                                                <td>{{ $getHelp->user->name }}</td>
-                                                <td>{{ $getHelp->user->email }}</td>
-                                                <td>{{ $getHelp->pivot->updated_at }}</td>
-                                                <td>
-                                                    {!! Form::open(['method' => 'GET', 'route' => 'linkReport.resendRejectedLink', 'class' => 'form-inline '])  !!}
-                                                    <input type="hidden" name="give_help_id" value="{{ $rejectedLink->id }}">
-                                                    <input type="hidden" name="get_help_id" value="{{ $getHelp->id }}">
-                                                    <input type="hidden" name="amount" value="{{ $getHelp->pivot->assigned_amount }}">
-                                                    <input type="submit" class="btn btn-success" value="Resend Link">
-                                                    {!! Form::close() !!}
-                                                </td>
-                                            </tr>
-                                            @php
-                                                $count = $count + 1;
-                                            @endphp
-                                        @endforeach
-                                        </tbody>
-                                    @endif
+                                <tbody>
+                                @foreach($rejectedData as $data)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $data['user_name'] }}</td>
+                                        <td>{{ $data['name'] }}</td>
+                                        <td>{{ $data['amount'] }}</td>
+                                        <td>{{ $data['rc_user_name'] }}</td>
+                                        <td>{{ $data['rc_name'] }}</td>
+                                        <td>{{ $data['created_date'] }}</td>
+                                        <td>
+                                            {!! Form::open(['method' => 'GET', 'route' => 'linkReport.resendRejectedLink', 'class' => 'form-inline '])  !!}
+                                            <input type="hidden" name="give_help_id" value="{{ $data['id'] }}">
+                                            <input type="hidden" name="get_help_id" value="{{ $data['get_help_id'] }}">
+                                            <input type="hidden" name="amount" value="{{ $data['amount'] }}">
+                                            <input type="submit" class="btn btn-success" value="Resend Link">
+                                            {!! Form::close() !!}
+                                        </td>
+                                    </tr>
                                 @endforeach
+                                </tbody>
                             </table>
-                            <div class="pagination"> {!! $rejectedLinks->appends(['user_id' => Request::get('user_id')])->render() !!} </div>
                         </div>
                     </div>
                 </div>

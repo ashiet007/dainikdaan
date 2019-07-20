@@ -1,101 +1,97 @@
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="en">
 
 <head>
-    <title>Dainik Daan</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="utf-8" />
-    <meta name="keywords" content="Wedding Planner Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
-	SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="_token" content="{{csrf_token()}}">
-    <script>
-        addEventListener("load", function () {
-            setTimeout(hideURLbar, 0);
-        }, false);
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-        function hideURLbar() {
-            window.scrollTo(0, 1);
-        }
-    </script>
-    <!-- Custom Theme files -->
-    <link href="{{asset('css/bootstrap.css')}}" type="text/css" rel="stylesheet" media="all">
-    <link href="{{asset('css/style.css')}}" type="text/css" rel="stylesheet" media="all">
-    <!-- font-awesome icons -->
-    <link href="{{asset('css/fontawesome-all.min.css')}}" rel="stylesheet">
-    <!-- //Custom Theme files -->
-    <!-- online-fonts -->
-    <link href="//fonts.googleapis.com/css?family=Roboto:100i,400,500,700" rel="stylesheet">
-    <link href="//fonts.googleapis.com/css?family=Josefin+Sans:300,400,600,700" rel="stylesheet">
-    <!-- //online-fonts -->
-    <link href="{{asset('css/custom.css')}}" rel="stylesheet">
+    <!-- Title -->
+    <title>Magic Bandhan</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="{{asset('images/core-img/favicon.ico')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.css">
+    <!-- Core Stylesheet -->
+    <link rel="stylesheet" href="{{asset('css/style.css')}}">
     @yield('styles')
+    <link rel="stylesheet" href="{{asset('css/custom.css')}}">
 
 </head>
 
 <body>
-
+<!-- Preloader -->
+<div class="preloader d-flex align-items-center justify-content-center">
+    <div class="cssload-container">
+        <div class="cssload-loading"><i></i><i></i><i></i><i></i></div>
+    </div>
+</div>
+@include('partials.homeNav')
 
 @yield('content')
-<!--/newsletter-->
-<footer class="newsletter_right pymd-5 py-4" id="footer">
+<!-- ##### Footer Area Start ##### -->
+<footer class="footer-area">
     <div class="container">
-        <div class="inner-sec py-md-5 py-3">
-            <div class="row mb-md-4 mb-md-3">
-                <div class="col-lg-3 col-md-6 social-info text-left">
-                    <h3 class="tittle1 foot mb-md-5 mb-4 text-white">Get in touch</h3>
-                    <p>0926k 4th block building,king Avenue, </p>
-                    <p class="my-2"> New York City,USA</p>
-                    <p class="phone">phone: +0444 555 6789</p>
-                    <p class="phone my-2">Fax: +0444 555 6789</p>
-                    <p class="phone">Mail:
-                        <a href="mailto:info@example.com">info@example.com</a>
-                    </p>
+        <div class="row">
 
+            <!-- Footer Widget Area -->
+            <div class="col-12 col-lg-5">
+                <div class="footer-widget-area mt-50">
+                    <a href="#" class="d-block mb-5"><img src="{{asset('images/core-img/logo1.png')}}" alt=""></a>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec malesuada lorem maximus mauris sceleri sque, at rutrum nulla dictum. Ut ac ligula sapien. Suspendisse cursus faucibus finibus. </p>
                 </div>
-                <div class="col-lg-3 col-md-6 social-info text-left">
-                    <h3 class="tittle1 foot mb-md-5 mb-4 text-white">About Us</h3>
-                    <p>Curabitur non nulla sit amet nislinit tempus convallis quis ac lectus. lac inia eget consectetur sed, convallis at tellus.
-                        Nulla porttitor accumsana tincidunt. Vestibulum ante ipsum primis tempus convallis.</p>
+            </div>
 
+            <!-- Footer Widget Area -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="footer-widget-area mt-50">
+                    <h6 class="widget-title mb-5">Find us on the map</h6>
+                    <img src="{{asset('images/bg-img/footer-map.png')}}" alt="">
                 </div>
-                <div class="col-lg-6 col-md-12 n-right tex-left">
-                    <h3 class="tittle1 foot mb-md-5 mb-4 text-white">Subscribe our Newsletter</h3>
-                    <form action="#" method="post">
-                        <div class="form-group d-flex">
-                            <input class="form-control" type="email" name="Email" placeholder=" Email Address" required="">
-                            <button class="form-control submit text-uppercase" type="submit ">Subscribe</button>
-                        </div>
+            </div>
+
+            <!-- Footer Widget Area -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="footer-widget-area mt-50">
+                    <h6 class="widget-title mb-5">Subscribe to our newsletter</h6>
+                    <form action="#" method="post" class="subscribe-form">
+                        <input type="email" name="subscribe-email" id="subscribeemail" placeholder="Your E-mail" required>
+                        <button type="submit">Subscribe</button>
                     </form>
+                </div>
+            </div>
+
+            <!-- Copywrite Text -->
+            <div class="col-12">
+                <div class="copywrite-text mt-30">
+                    <p><a href="#"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | <a href="{{url('/')}}" target="_blank">Magic Bandhan</a>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
                 </div>
             </div>
         </div>
     </div>
 </footer>
-<div class="copyright py-3">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8">
-                <p class="copy-right mt-2">© 2019 Dainik Daan. All Rights Reserved
-                </p>
-            </div>
-            <div class="col-md-4">
-                <ul class="social-icons scial justify-content-end">
-                    <li class="mr-1"><a href="#"><span class="fa fa-facebook"></span></a></li>
-                    <li class="mx-1"><a href="#"><span class="fa fa-twitter"></span></a></li>
-                    <li class="mx-1"><a href="#"><span class="fa fa-google-plus"></span></a></li>
-                    <li class="mx-1"><a href="#"><span class="fa fa-linkedin"></span></a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-<!--//newsletter-->
-<script
-        src="https://code.jquery.com/jquery-3.4.1.min.js"
-        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<!-- ##### Footer Area End ##### -->
+
+<!-- ##### All Javascript Script ##### -->
+<!-- jQuery-2.2.4 js -->
+<script src="{{asset('js/jquery/jquery-2.2.4.min.js')}}"></script>
+<!-- Popper js -->
+<script src="{{asset('js/bootstrap/popper.min.js')}}"></script>
+<!-- Bootstrap js -->
+<script src="{{asset('js/bootstrap/bootstrap.min.js')}}"></script>
+<!-- All Plugins js -->
+<script src="{{asset('js/plugins/plugins.js')}}"></script>
+<!-- Active js -->
+<script src="{{asset('js/active.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+@include('sweet::alert')
 @yield('scripts')
+<script src="{{asset('js/custom.js')}}"></script>
 </body>
+
 </html>

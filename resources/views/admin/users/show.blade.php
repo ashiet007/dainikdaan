@@ -21,7 +21,7 @@
                                         <td>{{ $user->userPassword->password }}</td>
                                     @else
                                         <td></td>
-                                    @endif</tr><tr><th> Mobile Number </th><td> {{ $user->userDetails->mob_no }} </td></tr><tr><th>Alternate Mobile Number </th><td> {{ $user->userDetails->alternate_mob_no }} </td></tr><tr><th> Email </th><td> {{ $user->email }} </td></tr><tr><th> State </th><td> {{ $user->userDetails->userState->name }} </td></tr><tr><th> District </th><td> {{ $user->userDetails->userDistrict->name }} </td></tr><tr><th> Sponsor ID </th><td> {{ $user->sponsor_id }} </td></tr>
+                                    @endif</tr><tr><th> Mobile Number </th><td> {{ $user->userDetails->mob_no }} </td></tr><tr><th> State </th><td> {{ $user->userDetails->userState->name }} </td></tr><tr><th> District </th><td> {{ $user->userDetails->userDistrict->name }} </td></tr><tr><th> Sponsor ID </th><td> {{ $user->sponsor_id }} </td></tr>
                                 <tr><th> Identity </th><td class="text-capitalize"> {{ $user->identity }} </td></tr>
                                 <tr><th> Status </th><td class="text-capitalize"> {{ $user->status }} </td></tr>
                                 <tr><th> Date of Joining </th><td> {{ $user->created_at->format('d, M Y h:i:s A') }} </td></tr>

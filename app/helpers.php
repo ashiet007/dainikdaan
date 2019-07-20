@@ -1,10 +1,12 @@
 <?php
 use App\User;
+use App\UserDetail;
 use App\State;
 use App\GiveHelp;
 use App\GetHelp;
 use App\UserFund;
-use App\DailyGrowth;
+use App\HelpSetting;
+use App\CompanyPool;
 use Illuminate\Support\Facades\Auth;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
@@ -13,7 +15,7 @@ use Carbon\Carbon;
 function sendMessage($number, $message)
 {
     $client = new GuzzleHttp\Client();
-    $res = $client->request('GET', 'http://mysmsshop.in/http-api.php?username=radiomaker&password=Helpdd*999&senderid=DDHELP&route=1&number='.$number.'&message='.$message);
+    $res = $client->request('GET', 'http://mysmsshop.in/http-api.php?username=radiomaker&password=Helpdd*999&senderid=MAGICB&route=1&number='.$number.'&message='.$message);
     $res->getStatusCode();
     // "200"
 
@@ -21,285 +23,192 @@ function sendMessage($number, $message)
     // {"type":"User"...'
 }
 
-function helpMatching()
+function helpMatchingCycle()
 {
-    $giveHelp = GiveHelp::select('give_helps.*')->with('user.userDetails')
+    $giveHelps = GiveHelp::select('give_helps.*')->with('user.userDetails')
         ->join('users', 'users.id', '=', 'give_helps.user_id')
         ->where('users.status','!=','blocked')
         ->where('give_helps.status','=','pending')
+        ->where('type', 'helping')
         ->where(function ($query) {
             $query->where('completion_state', 'partially-assigned')
                 ->orWhere('completion_state', 'none');
         })
         ->orderBY('match_order_date','ASC')
-        ->first();
-    $getHelp = GetHelp::select('get_helps.*')->with('user.userDetails')
-        ->join('users', 'users.id', '=', 'get_helps.user_id')
-        ->where('users.status','!=','blocked')
-        ->where('get_helps.status','pending')
-        ->where(function ($query) {
-            $query->where('completion_state', 'partially-assigned')
-                ->orWhere('completion_state', 'none');
-        })
-        ->orderBy('match_order_date','ASC')
-        ->first();
-    if(!is_null($giveHelp) && !is_null($getHelp))
+        ->get();
+    if(count($giveHelps))
     {
-
-        do
+        foreach ($giveHelps as $giveHelp)
         {
-            $giveHelpBalance = 0;
-            $getHelpBalance = 0;
-            if($giveHelp->balance == $getHelp->balance)
-            {
-                $amount = $giveHelp->balance;
-                $giveHelp->getHelps()->attach($getHelp->id,['assigned_amount' => $giveHelp->balance, 'status' => 'pending']);
-                $giveHelp->update([
-                    'balance' => $giveHelpBalance,
-                    'completion_state' => 'assigned',
-                ]);
-                $getHelp->update([
-                    'balance' => $getHelpBalance,
-                    'completion_state' => 'assigned',
-
-                ]);
-                $senderNumber = $giveHelp->user->userDetails->mob_no;
-                $receiverNumber = $getHelp->user->userDetails->mob_no;
-                $senderMessage = 'DEAR DD ID- '.$giveHelp->user->user_name.' ,YOU HAVE GOT A LINK FOR PROVIDE HELP AMT-'.$amount.',PLEASE CONTACT-'.$receiverNumber.','.$getHelp->user->name.',WWW.DAINIKDAAN.IN THANKS.';
-                $receiverMessage = 'DEAR DD ID- '.$getHelp->user->user_name.' ,YOU HAVE GOT A LINK FOR RECEIVE HELP AMT-'.$amount.',PLEASE CONTACT-'.$senderNumber.','.$giveHelp->user->name.',WWW.DAINIKDAAN.IN THANKS.';
-                sendMessage($senderNumber, $senderMessage);
-                sendMessage($receiverNumber, $receiverMessage);
-            }
-            elseif($giveHelp->balance > $getHelp->balance)
-            {
-                $amount = $getHelp->balance;
-                $giveHelpBalance = $giveHelp->balance - $getHelp->balance;
-                $giveHelp->getHelps()->attach($getHelp->id,['assigned_amount' => $getHelp->balance, 'status' => 'pending']);
-                $giveHelp->update([
-                    'balance' => $giveHelpBalance,
-                    'completion_state' => 'partially-assigned',
-
-                ]);
-                $getHelp->update([
-                    'balance' => $getHelpBalance,
-                    'completion_state' => 'assigned',
-                ]);
-                $senderNumber = $giveHelp->user->userDetails->mob_no;
-                $receiverNumber = $getHelp->user->userDetails->mob_no;
-                $senderMessage = 'DEAR DD ID- '.$giveHelp->user->user_name.' ,YOU HAVE GOT A LINK FOR PROVIDE HELP AMT-'.$amount.',PLEASE CONTACT-'.$receiverNumber.','.$getHelp->user->name.',WWW.DAINIKDAAN.IN THANKS.';
-                $receiverMessage = 'DEAR DD ID- '.$getHelp->user->user_name.' ,YOU HAVE GOT A LINK FOR RECEIVE HELP AMT-'.$amount.',PLEASE CONTACT-'.$senderNumber.','.$giveHelp->user->name.',WWW.DAINIKDAAN.IN THANKS.';
-                sendMessage($senderNumber, $senderMessage);
-                sendMessage($receiverNumber, $receiverMessage);
-            }
-            else
-            {
-                $amount = $giveHelp->balance;
-                $getHelpBalance = $getHelp->balance - $giveHelp->balance;
-                $giveHelp->getHelps()->attach($getHelp->id,['assigned_amount' => $giveHelp->balance, 'status' => 'pending']);
-                $giveHelp->update([
-                    'balance' => $giveHelpBalance,
-                    'completion_state' => 'assigned',
-
-                ]);
-                $getHelp->update([
-                    'balance' => $getHelpBalance,
-                    'completion_state' => 'partially-assigned',
-                ]);
-                $senderNumber = $giveHelp->user->userDetails->mob_no;
-                $receiverNumber = $getHelp->user->userDetails->mob_no;
-                $senderMessage = 'DEAR DD ID- '.$giveHelp->user->user_name.' ,YOU HAVE GOT A LINK FOR PROVIDE HELP AMT-'.$amount.',PLEASE CONTACT-'.$receiverNumber.','.$getHelp->user->name.',WWW.DAINIKDAAN.IN THANKS.';
-                $receiverMessage = 'DEAR DD ID- '.$getHelp->user->user_name.' ,YOU HAVE GOT A LINK FOR RECEIVE HELP AMT-'.$amount.',PLEASE CONTACT-'.$senderNumber.','.$giveHelp->user->name.',WWW.DAINIKDAAN.IN THANKS.';
-                sendMessage($senderNumber, $senderMessage);
-                sendMessage($receiverNumber, $receiverMessage);
-            }
-            $giveHelp = GiveHelp::select('give_helps.*')->with('user.userDetails')
-                ->join('users', 'users.id', '=', 'give_helps.user_id')
+            $getHelps = GetHelp::select('get_helps.*')->with('user.userDetails')
+                ->join('users', 'users.id', '=', 'get_helps.user_id')
                 ->where('users.status','!=','blocked')
-                ->where('give_helps.status','=','pending')
+                ->where('get_helps.status','pending')
                 ->where(function ($query) {
                     $query->where('completion_state', 'partially-assigned')
                         ->orWhere('completion_state', 'none');
                 })
-                ->orderBY('match_order_date','ASC')
-                ->first();
-            $getHelp = GetHelp::select('get_helps.*')->with('user.userDetails')
-                    ->join('users', 'users.id', '=', 'get_helps.user_id')
-                    ->where('users.status','!=','blocked')
-                    ->where('get_helps.status','pending')
-                    ->where(function ($query) {
-                        $query->where('completion_state', 'partially-assigned')
-                            ->orWhere('completion_state', 'none');
-                    })
-                    ->orderBy('match_order_date','ASC')
-                    ->first();
+                ->orderBy('match_order_date','ASC')
+                ->get();
+            if(count($getHelps))
+            {
+                foreach ($getHelps as $getHelp)
+                {
+                    helpAssign($giveHelp, $getHelp);
+                    break;
+                }
+            }
         }
-        while(!is_null($giveHelp) && !is_null($getHelp));
     }
+}
 
+function helpAssign($giveHelp, $getHelp)
+{
+    $giveHelpBalance = 0;
+    $getHelpBalance = 0;
+    if($giveHelp->balance == $getHelp->balance)
+    {
+        $amount = $giveHelp->balance;
+        $giveHelp->getHelps()->attach($getHelp->id,['assigned_amount' => $giveHelp->balance, 'status' => 'pending']);
+        $giveHelp->update([
+            'balance' => $giveHelpBalance,
+            'completion_state' => 'assigned',
+        ]);
+        $getHelp->update([
+            'balance' => $getHelpBalance,
+            'completion_state' => 'assigned',
+
+        ]);
+        $senderNumber = $giveHelp->user->userDetails->mob_no;
+        $receiverNumber = $getHelp->user->userDetails->mob_no;
+        $senderMessage = 'OUR MAGIC PARTNER- '.$giveHelp->user->user_name.' ,YOU HAVE GOT A LINK FOR PROVIDE HELP AMT- '.$amount.' ,PLEASE CONT- '.$receiverNumber.','.$getHelp->user->name.',WWW.MAGICBANDHAN.COM THANKS.';
+        $receiverMessage = 'OUR MAGIC PARTNER - '.$getHelp->user->user_name.' ,YOU HAVE GOT A LINK FOR RECEIVE HELP AMT-'.$amount.' ,PLEASE CONT- '.$senderNumber.','.$giveHelp->user->name.' ,WWW.MAGICBANDHAN.COM THANKS.';
+        sendMessage($senderNumber, $senderMessage);
+        sendMessage($receiverNumber, $receiverMessage);
+    }
+    elseif($giveHelp->balance > $getHelp->balance)
+    {
+        $amount = $getHelp->balance;
+        $giveHelpBalance = $giveHelp->balance - $getHelp->balance;
+        $giveHelp->getHelps()->attach($getHelp->id,['assigned_amount' => $getHelp->balance, 'status' => 'pending']);
+        $giveHelp->update([
+            'balance' => $giveHelpBalance,
+            'completion_state' => 'partially-assigned',
+
+        ]);
+        $getHelp->update([
+            'balance' => $getHelpBalance,
+            'completion_state' => 'assigned',
+        ]);
+        $senderNumber = $giveHelp->user->userDetails->mob_no;
+        $receiverNumber = $getHelp->user->userDetails->mob_no;
+        $senderMessage = 'OUR MAGIC PARTNER- '.$giveHelp->user->user_name.' ,YOU HAVE GOT A LINK FOR PROVIDE HELP AMT- '.$amount.' ,PLEASE CONT- '.$receiverNumber.','.$getHelp->user->name.',WWW.MAGICBANDHAN.COM THANKS.';
+        $receiverMessage = 'OUR MAGIC PARTNER - '.$getHelp->user->user_name.' ,YOU HAVE GOT A LINK FOR RECEIVE HELP AMT-'.$amount.' ,PLEASE CONT- '.$senderNumber.','.$giveHelp->user->name.' ,WWW.MAGICBANDHAN.COM THANKS.';
+        sendMessage($senderNumber, $senderMessage);
+        sendMessage($receiverNumber, $receiverMessage);
+    }
+    else
+    {
+        $amount = $giveHelp->balance;
+        $getHelpBalance = $getHelp->balance - $giveHelp->balance;
+        $giveHelp->getHelps()->attach($getHelp->id,['assigned_amount' => $giveHelp->balance, 'status' => 'pending']);
+        $giveHelp->update([
+            'balance' => $giveHelpBalance,
+            'completion_state' => 'assigned',
+
+        ]);
+        $getHelp->update([
+            'balance' => $getHelpBalance,
+            'completion_state' => 'partially-assigned',
+        ]);
+        $senderNumber = $giveHelp->user->userDetails->mob_no;
+        $receiverNumber = $getHelp->user->userDetails->mob_no;
+        $senderMessage = 'OUR MAGIC PARTNER- '.$giveHelp->user->user_name.' ,YOU HAVE GOT A LINK FOR PROVIDE HELP AMT- '.$amount.' ,PLEASE CONT- '.$receiverNumber.','.$getHelp->user->name.',WWW.MAGICBANDHAN.COM THANKS.';
+        $receiverMessage = 'OUR MAGIC PARTNER - '.$getHelp->user->user_name.' ,YOU HAVE GOT A LINK FOR RECEIVE HELP AMT-'.$amount.' ,PLEASE CONT- '.$senderNumber.','.$giveHelp->user->name.' ,WWW.MAGICBANDHAN.COM THANKS.';
+        sendMessage($senderNumber, $senderMessage);
+        sendMessage($receiverNumber, $receiverMessage);
+    }
 }
 
 function getDateTime($dateTime)
 {
    $seconds = time() - strtotime($dateTime);
-    $hours = floor($seconds / (60*60));
-   return $hours;
+   $hours = $seconds / (60*60);
+   return sprintf('%0.2f', $hours);
 }
 
 function helpGeneration()
 {
-    $users = User::with('userDetails')->get();
+    $users = User::with('userDetails','singleLineIncome')->get();
+    $helpSettings = HelpSetting::orderBy('order_no','DESC')->get();
     foreach($users as $user)
     {
         if($user->status != 'rejected' && $user->status != 'blocked' && $user->identity != 'fake')
         {
             $activeIds = getTotalDirectActiveTeam($user->user_name);
-            $getHelpsCount = GetHelp::where('user_id',$user->id)
-                              ->where('type','helping')
-                              ->count();
-            $modulo = $getHelpsCount%10;
-            if($modulo == 0)
-            {
-                $lastGiveHelp = GiveHelp::where('user_id',$user->id)
-                    ->orderBy('id','DESC')
-                    ->first();
-                if($lastGiveHelp)
-                {
-                    if($lastGiveHelp->status == 'accepted')
-                    {
-                        $lastGetHelp = GetHelp::where('user_id',$user->id)
-                            ->where('type','helping')
-                            ->orderBY('id','DESC')
-                            ->first();
-                        if($lastGetHelp)
-                        {
-                            if($lastGetHelp->status == 'accepted')
-                            {
-                                if($lastGiveHelp->created_at < $lastGetHelp->created_at)
-                                {
-                                    GiveHelp::create([
-                                        'user_id' => $user->id,
-                                        'amount' => 500,
-                                        'status' => 'pending',
-                                        'balance' => 500,
-                                        'completion_state' => 'none',
-                                    ]);
-                                }
-                                else if($lastGiveHelp->created_at > $lastGetHelp->created_at)
-                                {
-                                    $cycle = intval($getHelpsCount/10);
-                                    $cycleNo = $cycle + 1;
-                                    $neededActiveIds = $cycleNo * 2;
-                                    if($activeIds >= $neededActiveIds)
-                                    {
-                                        $hours = getDateTime($lastGiveHelp->updated_at);
-                                        if($hours >= 6)
-                                        {
-                                            GetHelp::create([
-                                                'user_id' => $user->id,
-                                                'amount' => 1000,
-                                                'status' => 'pending',
-                                                'type' => 'helping',
-                                                'balance' => 1000,
-                                                'completion_state' => 'none',
-                                            ]);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            $cycle = intval($getHelpsCount/10);
-                            $cycleNo = $cycle + 1;
-                            $neededActiveIds = $cycleNo * 2;
-                            if($activeIds >= $neededActiveIds)
-                            {
-                                $hours = getDateTime($lastGiveHelp->updated_at);
-                                if($hours >= 6)
-                                {
-                                    GetHelp::create([
-                                        'user_id' => $user->id,
-                                        'amount' => 1000,
-                                        'status' => 'pending',
-                                        'type' => 'helping',
-                                        'balance' => 1000,
-                                        'completion_state' => 'none',
-                                    ]);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                $lastGiveHelp = GiveHelp::where('user_id',$user->id)
-                        ->orderBy('id','DESC')
+            $lastGiveHelp = GiveHelp::where('user_id', $user->id)
+                ->where('type', 'helping')
+                ->orderBy('id', 'DESC')
+                ->first();
+            if ($lastGiveHelp) {
+                if ($lastGiveHelp->status == 'accepted') {
+                    $lastGetHelp = GetHelp::where('user_id', $user->id)
+                        ->where('type', 'helping')
+                        ->orderBy('id', 'DESC')
                         ->first();
-                if($lastGiveHelp)
-                {
-                    if($lastGiveHelp->status == 'accepted')
-                    {
-                        $lastGetHelp = GetHelp::where('user_id',$user->id)
-                            ->where('type','helping')
-                            ->orderBY('id','DESC')
-                            ->first();
-                        if($lastGetHelp)
-                        {
-                            if($lastGetHelp->status == 'accepted')
-                            {
-                                if($lastGiveHelp->created_at < $lastGetHelp->created_at)
+                    if ($lastGetHelp) {
+                        if ($lastGetHelp->status == 'accepted') {
+                            if ($lastGiveHelp->created_at < $lastGetHelp->created_at) {
+                                GiveHelp::create([
+                                    'user_id' => $user->id,
+                                    'amount' => 500,
+                                    'status' => 'pending',
+                                    'balance' => 500,
+                                    'type' => 'helping',
+                                    'completion_state' => 'none',
+                                ]);
+                            } else if ($lastGiveHelp->created_at > $lastGetHelp->created_at) {
+                                $isOnHold = checkUserforOnHold($user->id);
+                                if(!$isOnHold)
                                 {
-                                    GiveHelp::create([
-                                        'user_id' => $user->id,
-                                        'amount' => 500,
-                                        'status' => 'pending',
-                                        'balance' => 500,
-                                        'completion_state' => 'none',
-                                    ]);
-                                }
-                                else if($lastGiveHelp->created_at > $lastGetHelp->created_at)
-                                {
-                                    $cycle = intval($getHelpsCount/10);
-                                    $cycleNo = $cycle + 1;
-                                    $neededActiveIds = $cycleNo * 2;
-                                    if($activeIds >= $neededActiveIds)
+                                    if($user->singleLineIncome->amount >= 1000)
                                     {
-                                        $hours = getDateTime($lastGiveHelp->updated_at);
-                                        if($hours >= 6)
-                                        {
-                                            GetHelp::create([
-                                                'user_id' => $user->id,
-                                                'amount' => 1000,
-                                                'status' => 'pending',
-                                                'type' => 'helping',
-                                                'balance' => 1000,
-                                                'completion_state' => 'none',
-                                            ]);
-                                        }
+                                        GetHelp::create([
+                                            'user_id' => $user->id,
+                                            'amount' => 1000,
+                                            'status' => 'pending',
+                                            'type' => 'helping',
+                                            'balance' => 1000,
+                                            'completion_state' => 'none',
+                                        ]);
+                                        $user->singleLineIncome->update([
+                                            'amount' => 0,
+                                            'status' => 'stop'
+                                        ]);
+                                        break;
                                     }
                                 }
                             }
                         }
-                        else
+                    } else {
+                        $isOnHold = checkUserforOnHold($user->id);
+                        if(!$isOnHold)
                         {
-                            $cycle = intval($getHelpsCount/10);
-                            $cycleNo = $cycle + 1;
-                            $neededActiveIds = $cycleNo * 2;
-                            if($activeIds >= $neededActiveIds)
+                            if($user->singleLineIncome->amount >= 1000)
                             {
-                                $hours = getDateTime($lastGiveHelp->updated_at);
-                                if($hours >= 6)
-                                {
-                                    GetHelp::create([
-                                        'user_id' => $user->id,
-                                        'amount' => 1000,
-                                        'status' => 'pending',
-                                        'type' => 'helping',
-                                        'balance' => 1000,
-                                        'completion_state' => 'none',
-                                    ]);
-                                }
+                                GetHelp::create([
+                                    'user_id' => $user->id,
+                                    'amount' => 1000,
+                                    'status' => 'pending',
+                                    'type' => 'helping',
+                                    'balance' => 1000,
+                                    'completion_state' => 'none',
+                                ]);
+                                $user->singleLineIncome->update([
+                                    'amount' => 0,
+                                    'status' => 'stop'
+                                ]);
+                                break;
                             }
                         }
                     }
@@ -408,23 +317,39 @@ function totalIncome($username)
     foreach ($members as $member)
     {
         $giveHelp = GiveHelp::where('user_id',$member->id)
+                            ->where('type','helping')
                             ->orderBy('id','ASC')
                             ->first();
         if($giveHelp)
         {
             if($giveHelp->status == 'accepted')
             {
-                $income = $income + $giveHelp->amount * 0.2;
+                $income = $income + 100;
             }
         }
     }
     $id = Auth::User()->id;
     $addedFund = UserFund::where('user_id',$id)
+        ->where('type','credit')
         ->sum('amount');
-    $dainikGrowth = DailyGrowth::where('user_id',$id)
-        ->sum('amount');
-    $income =$income+$addedFund + $dainikGrowth;
+    $income =$income+$addedFund ;
     return $income;
+}
+
+function helpingIncome()
+{
+    $id = Auth::User()->id;
+    $gethelp = new GetHelp;
+    $totalHelpingIncome = $gethelp->totalHelpingIncome($id);
+    return $totalHelpingIncome;
+}
+
+function sumOfIncomes($username)
+{
+    $workingIncome = totalIncome($username);
+    $totalHelpingIncome = helpingIncome();
+    $sum = $workingIncome + $totalHelpingIncome;
+    return $sum;
 }
 
 function availableBalance($username,$id)
@@ -433,7 +358,10 @@ function availableBalance($username,$id)
     $withdrawalAmount = GetHelp::where('user_id',$id)
         ->where('type','working')
         ->sum('amount');
-    return $availableBalance = $income - $withdrawalAmount;
+    $deductedBalance = UserFund::where('user_id',$id)
+        ->where('type','debit')
+        ->sum('amount');
+    return $availableBalance = $income - ($withdrawalAmount + $deductedBalance) ;
 }
 
 function getDetails($username)
@@ -445,71 +373,49 @@ function getDetails($username)
 
 }
 
-function dailyGrowth()
+function checkUserforOnHold($id)
 {
-    $users = User::get();
-    foreach ($users as $user)
+    $detail = UserDetail::where('user_id',$id)
+                        ->select('mob_no','account_no')
+                        ->first();
+    $users = UserDetail::with('user')
+                ->join('users','users.id','=','user_details.user_id')
+                ->select('user_details.*')
+                ->where(function ($query) use ($detail) {
+                    $query->where('mob_no', '=', $detail->mob_no)
+                        ->orWhere('account_no', '=', $detail->account_no);
+                })
+                ->where('users.status', '=', 'rejected')
+                ->get();
+    $count = count($users);
+    if($count > 0)
+        return true;
+    else
+        return false;
+}
+
+function addSingleLineIncome()
+{
+    $companyPool = CompanyPool::with('user')
+                                    ->start()
+                                    ->get();
+    foreach ($companyPool as $data)
     {
-        if($user->status != 'rejected' && $user->status != 'blocked' && $user->identity != 'fake')
+        if($data->user->status == 'active')
         {
-            $id = $user->id;
-            $giveHelp = GiveHelp::where('user_id',$id)
-                                ->orderBy('id','ASC')
-                                ->first();
-            if($giveHelp)
+            $activeIds = getTotalDirectActiveTeam($data->user->user_name);
+            $helpSettings = HelpSetting::orderBy('order_no','DESC')->get();
+            foreach ($helpSettings as $helpSetting)
             {
-                if($giveHelp->status == 'accepted')
+                if ($activeIds >= $helpSetting->needed_active_ids )
                 {
-                    $initialTimestamp = $giveHelp->updated_at;
-                    $hours = getDateTime($initialTimestamp);
-                    $days = floor($hours / (24));
-                    $dailyGrowths = DailyGrowth::where('user_id',$id)->count();
-                    if($dailyGrowths < 15)
-                    {
-                        $amount = 50;
-                        $i = $days - $dailyGrowths;
-                        for($i; $i>=1; $i--)
-                        {
-                            DailyGrowth::create([
-                                'user_id' => $id,
-                                'amount' => $amount
-                            ]);
-                        }
-                    }
+                    $amount =  $data->amount + $helpSetting->income_per_id;
+                    $data->update([
+                        'amount' => $amount
+                    ]);
+                    break;
                 }
             }
         }
     }
 }
-
-//public function newHelpMatching()
-//{
-//    $giveHelps = GiveHelp::with('user.userDetails')
-//        ->where('status','=','pending')
-//        ->where(function ($query) {
-//            $query->where('completion_state', 'partially-assigned')
-//                ->orWhere('completion_state', 'none');
-//        })
-//        ->orderBY('match_order_date','ASC')
-//        ->get();
-//    foreach ($giveHelps as $giveHelp)
-//    {
-//        $getHelps = GetHelp::with('user.userDetails')
-//            ->where('status','pending')
-//            ->where(function ($query) {
-//                $query->where('completion_state', 'partially-assigned')
-//                    ->orWhere('completion_state', 'none');
-//            })
-//            ->orderBy('match_order_date','ASC')
-//            ->get();
-//        foreach ($getHelps as $getHelp)
-//        {
-//            $status = true;
-//            if($getHelp->type == 'helping')
-//            {
-//                $hours = getDateTime($getHelp->created_at);
-//                if()
-//            }
-//        }
-//    }
-//}

@@ -9,16 +9,17 @@ use Illuminate\Http\Request;
 class ContactController extends Controller
 {
 
- public function store(Request $request)
-    {
-       $this->validate($request,[
-			'name' => 'required|max:255',
-			'email' =>'required|email|max:50',
-      'subject' => 'max:255',
-		  'message' => 'required|max:255',
-		]);
-        $requestData = $request->all();   
-        Contact::create($requestData);
-        return redirect('contact')->with('flash_message', 'Your Query has been submited!');   
-  }
+     public function store(Request $request)
+     {
+           $this->validate($request,[
+                'name' => 'required|max:255',
+                'email' =>'email|max:50',
+                'subject' => 'max:255',
+                'message' => 'required|max:255',
+            ]);
+            $requestData = $request->all();
+            Contact::create($requestData);
+            alert()->success('Your Query Has been Submited', 'Success')->persistent("Close");
+            return redirect('contact');
+      }
 }

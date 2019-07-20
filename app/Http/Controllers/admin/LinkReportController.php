@@ -20,78 +20,86 @@ class LinkReportController extends Controller
      */
     public function accptedLink()
     {
-        $perPage = 100;
-        $accptedLinks = GiveHelp::with(['user','getHelps.user','getHelps'=> function($query)
-                                      {
-                                          $query->where('give_get_helps.status', '=', 'accepted');
-                                      }
-                                 ])
-                                 ->where(function ($query) {
-                                      $query->where('completion_state', 'partially-assigned')
-                                            ->orWhere('completion_state', 'assigned');
-                                  })
-                                 ->orderBy('updated_at','DESC')
-                                ->paginate($perPage);    
-      return view('admin.link-reports.accepted',compact('accptedLinks'));
+        $giveHelp = new GiveHelp;
+        $acceptedLinks = $giveHelp->getAcceptedLinks();
+        $acceptedData = array();
+        foreach($acceptedLinks as $acceptedLink)
+        {
+            if(!$acceptedLink->getHelps->isEmpty())
+            {
+                foreach ($acceptedLink->getHelps as $getHelp)
+                {
+                    $data['user_name'] = $acceptedLink->user->user_name;
+                    $data['name'] = $acceptedLink->user->name;
+                    $data['amount'] = $getHelp->pivot->assigned_amount;
+                    $data['rc_user_name'] = $getHelp->user->user_name;
+                    $data['rc_name'] = $getHelp->user->name;
+                    $data['created_date'] = $getHelp->pivot->updated_at->format('d, M Y h:i:s A');
+                    $acceptedData[] = $data;
+                }
+            }
+        }
+        return view('admin.link-reports.accepted',compact('acceptedData'));
     }
     
     public function rejectedLink(Request $request)
     {
         $username = User::pluck('user_name','id')->toArray();
         $requestData = $request->all();
-        $perPage = 100;
+        $giveHelp = new GiveHelp;
         if(!empty($requestData))
         {
             $id = $request->user_id;
-            $rejectedLinks = GiveHelp::with(['user','getHelps.user','getHelps'=> function($query)
-                                      {
-                                          $query->where('give_get_helps.status', '=', 'rejected');
-                                      }
-                                 ])
-                                 ->where(function ($query) {
-                                      $query->where('completion_state', 'partially-assigned')
-                                            ->orWhere('completion_state', 'assigned');
-                                  })
-                                 ->where('status', '=', 'rejected')
-                                 ->where('user_id', $id)
-                                 ->orderBy('updated_at','DESC')
-                                ->paginate($perPage);    
-            return view('admin.link-reports.rejected',compact('rejectedLinks','username'));
+            $rejectedLinks = $giveHelp->getRejectedLinks($id);
         }
         else
         {
-            $rejectedLinks = GiveHelp::with(['user','getHelps.user','getHelps'=> function($query)
-                                      {
-                                          $query->where('give_get_helps.status', '=', 'rejected');
-                                      }
-                                 ])
-                                 ->where(function ($query) {
-                                      $query->where('completion_state', 'partially-assigned')
-                                            ->orWhere('completion_state', 'assigned');
-                                  })
-                                 ->where('status', '=', 'rejected')
-                                 ->orderBy('updated_at','DESC')
-                                ->paginate($perPage);    
-            return view('admin.link-reports.rejected',compact('rejectedLinks','username'));
+            $rejectedLinks = $giveHelp->getRejectedLinks();
         }
+        $rejectedData = array();
+        foreach($rejectedLinks as $rejectedLink)
+        {
+            if(!$rejectedLink->getHelps->isEmpty())
+            {
+                foreach ($rejectedLink->getHelps as $getHelp)
+                {
+                    $data['id'] = $rejectedLink->id;
+                    $data['get_help_id'] = $getHelp->id;
+                    $data['user_name'] = $rejectedLink->user->user_name;
+                    $data['name'] = $rejectedLink->user->name;
+                    $data['amount'] = $getHelp->pivot->assigned_amount;
+                    $data['rc_user_name'] = $getHelp->user->user_name;
+                    $data['rc_name'] = $getHelp->user->name;
+                    $data['created_date'] = $getHelp->pivot->updated_at->format('d, M Y h:i:s A');
+                    $rejectedData[] = $data;
+                }
+            }
+        }
+        return view('admin.link-reports.rejected',compact('rejectedData','username'));
         
     }
     public function pendingLink()
     {
-        $perPage = 100;
-        $pendingLinks = GiveHelp::with(['user','getHelps.user','getHelps'=> function($query)
-                                      {
-                                          $query->where('give_get_helps.status', '=', 'pending');
-                                      }
-                                 ])
-                                 ->where(function ($query) {
-                                      $query->where('completion_state', 'partially-assigned')
-                                            ->orWhere('completion_state', 'assigned');
-                                  })
-                                ->where('status', 'pending')
-                                ->orderBy('updated_at','DESC')
-                                ->paginate($perPage);    
-        return view('admin.link-reports.pending',compact('pendingLinks'));
+        $giveHelp = new GiveHelp;
+        $pendingLinks = $giveHelp->getPendingLinks();
+        $pendingData = array();
+        foreach($pendingLinks as $pendingLink)
+        {
+            if(!$pendingLink->getHelps->isEmpty())
+            {
+                foreach ($pendingLink->getHelps as $getHelp)
+                {
+                    $data['user_name'] = $pendingLink->user->user_name;
+                    $data['name'] = $pendingLink->user->name;
+                    $data['amount'] = $getHelp->pivot->assigned_amount;
+                    $data['rc_user_name'] = $getHelp->user->user_name;
+                    $data['rc_name'] = $getHelp->user->name;
+                    $data['created_date'] = $getHelp->pivot->created_at->format('d, M Y h:i:s A');
+                    $pendingData[] = $data;
+                }
+            }
+        }
+        return view('admin.link-reports.pending',compact('pendingData'));
     }
 
     public function resendRejectedLink(Request $request)
@@ -112,18 +120,18 @@ class LinkReportController extends Controller
             if($giveHelp->amount == $balance)
             {
                 $giveHelp->update([
-                          'completion_state' => 'none',
-                          'balance' => $balance,
-                          'status' => 'pending'
-                         ]);
+                    'completion_state' => 'none',
+                    'balance' => $balance,
+                    'status' => 'pending'
+                ]);
             }
             elseif($giveHelp->amount > $balance)
             {
                 $giveHelp->update([
-                          'completion_state' => 'partially-assigned',
-                          'balance' => $balance,
-                          'status' => 'pending'
-                         ]);
+                    'completion_state' => 'partially-assigned',
+                    'balance' => $balance,
+                    'status' => 'pending'
+                ]);
             }
             $user = User::findOrFail($user_id);
             if($user->status == 'rejected')
@@ -142,8 +150,8 @@ class LinkReportController extends Controller
                     ]);
                 }
             }
-            
-          return redirect()->route('linkReport.rejectedLink')->with('flash_message','Link has been sent');
+          alert()->success('Link has been sent', 'Success')->persistent("Close");
+          return redirect()->route('linkReport.rejectedLink');
         }
     }
 
@@ -192,15 +200,16 @@ class LinkReportController extends Controller
                          ]);
             }
             $giveHelp->getHelps()->detach($getHelpId);
-            return redirect()->back()->with('flash_message','help has been deleted');
+            alert()->success('Help has been deleted', 'Success')->persistent("Close");
+            return redirect()->back();
         }
     }
 
     public function sendersList()
     {
         $users = GiveHelp::with('user')
-            ->where('completion_state','none')
-            ->where('status','pending')
+            ->notAssigned()
+            ->pending()
             ->orderBy('match_order_date','DESC')
             ->get();
         return view('admin.link-reports.senders',compact('users'));
@@ -209,8 +218,8 @@ class LinkReportController extends Controller
     public function receiverList()
     {
         $users = GetHelp::with('user')
-            ->where('completion_state','none')
-            ->where('status','pending')
+            ->notAssigned()
+            ->pending()
             ->orderBy('match_order_date','DESC')
             ->get();
         return view('admin.link-reports.receiver',compact('users'));
@@ -225,7 +234,8 @@ class LinkReportController extends Controller
         $getHelp->update([
            'match_order_date'=> $requestData['match_order_date']
         ]);
-        return redirect()->back()->with('flash_message','Order Updated Successfully');
+        alert()->success('Order Updated Successfully', 'Success')->persistent("Close");
+        return redirect()->back();
     }
 
     public function changeOrderGive(Request $request)
@@ -237,6 +247,8 @@ class LinkReportController extends Controller
         $giveHelp->update([
             'match_order_date'=> $requestData['match_order_date']
         ]);
-        return redirect()->back()->with('flash_message','Order Updated Successfully');
+        alert()->success('Order Updated Successfully', 'Success')->persistent("Close");
+        return redirect()->back();
     }
+
 }

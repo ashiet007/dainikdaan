@@ -13,22 +13,16 @@ class TeamController extends Controller
     public function registeredList()
     {
         $username = Auth::User()->user_name;
-        $registerUsers = User::with('userDetails.userState','userDetails.userDistrict')
-                            ->where('sponsor_id',$username)
-                            ->where('status','pending')
-                            ->where('identity','real')
-                            ->get();
+        $user = new User;
+        $registerUsers = $user->getRegisteredUser($username);
         return view('user.team.register',compact('registerUsers'));
     }
 
     public function activeList()
     {
         $username = Auth::User()->user_name;
-        $activeUsers = User::with('userDetails.userState','userDetails.userDistrict')
-            ->where('sponsor_id',$username)
-            ->where('status','active')
-            ->where('identity','real')
-            ->get();
+        $user = new User;
+        $activeUsers = $user->getActiveUser($username);
         return view('user.team.active',compact('activeUsers'));
     }
     public function directList()
@@ -43,7 +37,7 @@ class TeamController extends Controller
     {
         $username = Auth::User()->user_name;
         $rejectedList = User::with('userDetails')->where('sponsor_id',$username)
-            ->where('status','rejected')->get();
+            ->rejected()->get();
         return view('user.team.rejected',compact('rejectedList'));
     }
 }

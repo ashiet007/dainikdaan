@@ -19,14 +19,7 @@ class ReportController extends Controller
     {
         $id = Auth::User()->id;
         $perPage = 25;
-        $giveHelps = GiveHelp::with('getHelps.user')
-            ->where('user_id', $id)
-            ->where(function ($query) {
-                $query->where('completion_state', 'partially-assigned')
-                    ->orWhere('completion_state', 'assigned');
-            })
-            ->orderBy('created_at','DESC')
-            ->paginate($perPage);
+        $giveHelps = GiveHelp::report($id)->paginate($perPage);
         return view('user.report.given', compact('giveHelps'));
     }
 
@@ -34,14 +27,7 @@ class ReportController extends Controller
     {
         $id = Auth::User()->id;
         $perPage = 25;
-        $getHelps = GetHelp::with('giveHelps.user')
-            ->where('user_id', $id)
-            ->where(function ($query) {
-                $query->where('completion_state', 'partially-assigned')
-                    ->orWhere('completion_state', 'assigned');
-            })
-            ->orderBy('created_at','DESC')
-            ->paginate($perPage);
+        $getHelps = GetHelp::report($id)->helping()->paginate($perPage);
         return view('user.report.taken', compact('getHelps'));
     }
 
@@ -50,18 +36,18 @@ class ReportController extends Controller
         $id = Auth::User()->id;
         $perPage = 25;
         $getHelps = GetHelp::with(['giveHelps' => function($query)
-        {
-            $query->where('give_get_helps.status', '=', 'rejected');
-        }
-        ])
+                {
+                    $query->where('give_get_helps.status', '=', 'rejected');
+                }
+            ])
             ->where('user_id', $id)
             ->orderBy('created_at','DESC')
             ->paginate($perPage);
         $giveHelps = GiveHelp::with(['getHelps' => function($query)
-        {
-            $query->where('give_get_helps.status', '=', 'rejected');
-        }
-        ])
+                {
+                    $query->where('give_get_helps.status', '=', 'rejected');
+                }
+            ])
             ->where('user_id', $id)
             ->orderBy('created_at','DESC')
             ->paginate($perPage);

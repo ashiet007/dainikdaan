@@ -3,13 +3,13 @@
 @section('content')
     <section class="py-5 col-md-12">
         <div class="container-fluid">
-            <div class="container">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header text-center">
-                        <h2 class="h6 text-uppercase mb-0">Rejected User</h2>
+                        <h2 class="h6 text-uppercase mb-0">Rejected List</h2>
                     </div>
                     <div class="card-body">
-                        <div class="table table-responsive">
+                        <div class="table-responsive">
                             <table class="table">
                                 <thead>
                                 <tr>

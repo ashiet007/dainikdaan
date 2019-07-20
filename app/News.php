@@ -27,5 +27,15 @@ class News extends Model
      */
     protected $fillable = ['type','subject','details'];
 
+    public function scopeHorizontal($query)
+    {
+        return $query->where('type','horizontal');
+    }
+
+    public function scopeVertical($query)
+    {
+        return $query->where('type','vertical');
+    }
+
 
 }

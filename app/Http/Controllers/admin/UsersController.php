@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\CompanyPool;
 use App\Role;
 use App\User;
 use App\UserDetail;
@@ -15,58 +16,80 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use JsValidator;
+use Validator;
+
 class UsersController extends Controller
 {
+    protected $validationRules = [
+        'sponsor_id' => 'required|exists:users,user_name',
+        'name' => ['required','string','max:255','regex:/(^[a-zA-Z\\s]*$)/u'],
+        'user_name' => 'required|string|max:255|unique:users|alpha_num|regex:/^[a-zA-Z]{3}[A-Z0-9a-z]*$/',
+        'role' => 'required',
+        'identity' => 'required',
+        'mob_no' => 'required|numeric|digits:10',
+        'district_id' => 'required',
+        'state_id' => 'required',
+        'bank_id' => 'required',
+        'account_no' => 'required|numeric',
+        'account_type' => 'required|string|max:255',
+        'ifsc_code' => ['required','string','max:255','regex:/(^([A-Z|a-z]{4}[0][A-Z0-9a-z]{6}$))/u'],
+        'branch' => 'required|string|max:255',
+        'paytm_no' => 'numeric|digits:10|nullable',
+        'gpay_no' => 'numeric|digits:10|nullable',
+        'password' => 'required|string|min:6|confirmed'
+        ];
+    protected $customAttributes = [
+        'sponsor_id' => 'Sponsor ID',
+        'sponsor_name' => 'Sponsor Name',
+        'name' => 'Name',
+        'user_name' => 'Username',
+        'mob_no' => 'Mobile Number',
+        'district_id' => 'District',
+        'state_id' => 'State',
+        'account_no' => 'Account Number',
+        'account_type' => 'Account Type',
+        'ifsc_code' => 'IFSC Code',
+        'branch' => 'Branch',
+        'password' => 'Password',
+        'paytm_no' => 'Paytm Number',
+        'gpay_no' => 'Gpay Number',
+        'bank_id' => 'Bank Name'
+    ];
     /**
      * Display a listing of the resource.
      *
      * @return void
      */
     public function createUserForm(){
+        $validator = JsValidator::make($this->validationRules,[],$this->customAttributes);
         $sponsorId = User::pluck('user_name','user_name')->toArray();
         $banks = Bank::pluck('name','id')->toArray();
         $states = State::all();
         $roles = Role::select('id', 'name', 'label')->get();
         $roles = $roles->pluck('label', 'name');
-        return view('admin.users.fakeuser', compact('roles','sponsorId','banks','states'));
+        return view('admin.users.fakeuser', compact('roles','sponsorId','banks','states','validator'));
     }
     
     public function createUser(Request $request)
     {
-        $this->validate($request, [
-            'sponsor_id' => 'required|exists:users,user_name',
-            'name' => ['required','string','max:255','regex:/(^[a-zA-Z\\s]*$)/u'],
-            'user_name' => 'required|string|max:255|unique:users|alpha_num|regex:/^[a-zA-Z]{3}[A-Z0-9a-z]*$/',
-            'role' => 'required',
-            'identity' => 'required',
-            'email' => 'required|string|email|max:255',
-            'mob_no' => 'required|numeric|digits:10',
-            'alternate_mob_no' => 'numeric|digits:10|nullable',
-            'district_id' => 'required',
-            'state_id' => 'required',
-            'bank_id' => 'required',
-            'account_no' => 'required|numeric',
-            'account_type' => 'required|string|max:255',
-            'ifsc_code' => ['required','string','max:255','regex:/(^([A-Z|a-z]{4}[0][A-Z0-9a-z]{6}$))/u'],
-            'branch' => 'required|string|max:255',
-            'paytm_no' => 'numeric|digits:10|nullable',
-            'gpay_no' => 'numeric|digits:10|nullable',
-            'password' => 'required|string|min:6|confirmed'
-            ]);
+        $validation = Validator::make($request->all(), $this->validationRules,[],$this->customAttributes);
+        if ($validation->fails()) {
+            return redirect()->back()->withInput()->withErrors($validation->errors());
+        }
         $password = $request->password;
         $data = $request->all();
         $user = User::create([
             'name' => strtoupper($request->name),
             'user_name' => strtolower($request->user_name),
-            'email' => strtolower($request->email),
             'password' => bcrypt($request->password),
             'identity' => $request->identity,
             'sponsor_id' => $request->sponsor_id,
+            'status' => 'active',
         ]);
         $user->assignRole($request->role);
         $userDetails = array();
         $userDetails['mob_no'] = $data['mob_no'];
-        $userDetails['alternate_mob_no'] = $data['alternate_mob_no'];
         $userDetails['state_id'] = $data['state_id'];
         $userDetails['district_id'] = $data['district_id'];
         $userDetails['bank_id'] = $data['bank_id'];
@@ -82,7 +105,11 @@ class UsersController extends Controller
             'user_id' => $user->id,
             'password'=> $data['password']
         ]);
-        return redirect('admin/users')->with('flash_message', 'User added!');
+        $companyPool = CompanyPool::create([
+                'user_id' => $user->id
+            ]);
+        alert()->success('User added!!!', 'Success')->persistent("Close");
+        return redirect('admin/users');
     } 
 
     public function index(Request $request)
@@ -97,9 +124,7 @@ class UsersController extends Controller
                          ->orWhere('user_name', 'LIKE', "%$keyword%")
                          ->orWhere('status', 'LIKE', "%$keyword%")
                          ->orWhere('identity', 'LIKE', "%$keyword%")
-                         ->orWhere('email', 'LIKE', "%$keyword%")
                          ->orWhere('user_details.mob_no','LIKE',"%$keyword%")
-                         ->orWhere('user_details.alternate_mob_no','LIKE',"%$keyword%")
                          ->orWhere('user_details.state_id','LIKE',"%$keyword%")
                          ->orWhere('user_details.district_id','LIKE',"%$keyword%")
                          ->orderBy('created_at','DESC')
@@ -187,9 +212,7 @@ class UsersController extends Controller
     {
         $this->validate($request, [
             'name' => ['required','string','max:255','regex:/(^[a-zA-Z\\s]*$)/u'],
-            'email' => ['required','string','email','max:255'],
             'mob_no' =>['required','numeric'],
-            'alternate_mob_no' => ['nullable','numeric'],
             'district_id' => 'required',
             'state_id' => 'required',
             'bank_id' => 'required',
@@ -212,7 +235,6 @@ class UsersController extends Controller
             $user->update([
                 'name' => strtoupper($request->name),
                 'user_name' => strtolower($request->user_name),
-                'email' => strtolower($request->email),
                 'password' => $data['password']
             ]);
         }
@@ -220,13 +242,11 @@ class UsersController extends Controller
             $user->update([
                 'name' => strtoupper($request->name),
                 'user_name' => strtolower($request->user_name),
-                'email' => strtolower($request->email),
         ]);
         }
         $userProfile = UserDetail::where('user_id',$id)->firstOrFail();
         $userProfile->update([
             'mob_no' => $request->mob_no,
-            'alternate_mob_no' => $request->alternate_mob_no,
             'district_id' => strtoupper($request->district_id),
             'state_id' => strtoupper($request->state_id),
             'bank_id' => strtoupper($request->bank_id),
@@ -237,8 +257,8 @@ class UsersController extends Controller
             'paytm_no' => $request->paytm_no,
             'gpay_no' => $request->gpay_no,
         ]);
-                
-        return redirect('admin/users')->with('flash_message', 'User updated!');
+        alert()->success('User updated!', 'Success')->persistent("Close");
+        return redirect('admin/users');
     }
 
     /**
@@ -251,8 +271,8 @@ class UsersController extends Controller
     public function destroy($id)
     {
         User::destroy($id);
-
-        return redirect('admin/users')->with('flash_message', 'User deleted!');
+        alert()->success('User deleted!', 'Success')->persistent("Close");
+        return redirect('admin/users');
     }
 
     public function viewSecurity()
@@ -279,16 +299,19 @@ class UsersController extends Controller
                 $user->update([
                     'password' => $newPassword
                 ]);
-                return redirect()->back()->with('flash_message','Password updated successfully');
+                alert()->success('Password updated successfully', 'Success')->persistent("Close");
+                return redirect()->back();
             }
             catch (\Illuminate\Database\QueryException $e)
             {
-                return redirect()->back()->withErrors($e->getMessage())->withInput();
+                alert()->error($e->getMessage(), 'Error')->persistent("Close");
+                return redirect()->back()->withInput();
             }
         }
         else
         {
-            return redirect()->back()->withErrors('Current Password is Incorrect')->withInput();
+            alert()->error('Current Password is Incorrect', 'Error')->persistent("Close");
+            return redirect()->back()->withInput();
         }
 
     }

@@ -18,7 +18,6 @@ class GetHelpWorkingController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = 100;
         $keyword = $request->get('search');
         $status = $request->get('status');
         if($keyword != null || $status != null) {
@@ -41,9 +40,9 @@ class GetHelpWorkingController extends Controller
                               ->orWhere('amount', 'LIKE', "%$keyword%");
                           });
             }
-            $gethelps = $gethelps->paginate($perPage);
+            $gethelps = $gethelps->get();
         } else {
-            $gethelps = GetHelp::with('user','giveHelps.user')->orderBy('created_at', 'DESC')->where('type','working')->paginate($perPage);
+            $gethelps = GetHelp::with('user','giveHelps.user')->orderBy('created_at', 'DESC')->where('type','working')->get();
         }
 
         return view('admin.getHelpsWorking.index', compact('gethelps'));

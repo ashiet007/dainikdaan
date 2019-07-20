@@ -42,7 +42,6 @@ class ActionController extends Controller
         {
             $id = $requestData['id'];
             $user = User::findOrFail($id);
-            
             if($user->status == 'blocked')
             {
                 $giveHelp = GiveHelp::where('user_id', $id)
@@ -73,6 +72,12 @@ class ActionController extends Controller
                                 'status' => 'pending'
                             ]);
                         }
+                        else
+                        {
+                            $user->update([
+                                'status' => 'active'
+                            ]);
+                        }
                     }
                 }                
                 else
@@ -92,7 +97,8 @@ class ActionController extends Controller
             }
             $user = User::findOrFail($id);
         }
-        return redirect()->route('action.index')->with('flash_message',$flash_message);        
+        alert()->success($flash_message, 'Success')->persistent("Close");
+        return redirect()->route('action.index');
     }
 
     public function linkAction()
@@ -114,7 +120,8 @@ class ActionController extends Controller
         $setting->update([
            'link_status' => $status
         ]);
-        return redirect()->back()->with('flash_message','Link Status updated successfully');
+        alert()->success('Link Status updated successfully', 'Success')->persistent("Close");
+        return redirect()->back();
 
     }
 }

@@ -6,19 +6,24 @@ namespace App\Http\Controllers;
 use App\Setting;
 use App\User;
 use App\GiveHelp;
+use Carbon\Carbon;
 
 class CronController extends Controller
 {
     public function helpMatching()
     {
         $setting = Setting::first();
-        if($setting->link_status == 1)
+        $time = Carbon::now('Asia/Kolkata');
+        $hour = $time->format('H');
+        $t=date('d-m-Y');
+        $day = date("D",strtotime($t));
+//        if($setting->link_status == 1 && $day != 'Sun' && $hour >= 10 && $hour < 17)
+        if(true)
         {
-            helpMatching();
+            helpMatchingCycle();
         }
 
         helpGeneration();
-        dailyGrowth();
     }
 
     public function userStatusUpdate()

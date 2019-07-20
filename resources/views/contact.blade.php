@@ -1,101 +1,95 @@
 @extends('layouts.app')
 @section('content')
-    <!-- banner -->
-    <div class="inner-banner">
-    @include('partials.homeNav')
-    <!-- //header -->
+    <!-- ##### Breadcumb Area Start ##### -->
+    <section class="breadcumb-area bg-img d-flex align-items-center justify-content-center mb-5" style="background-image: url('images/bg-img/bg-3.jpg');">
+        <div class="bradcumbContent">
+            <h2>Contact us</h2>
+        </div>
+    </section>
+    <!-- ##### Breadcumb Area End ##### -->
+    <!-- ##### Contact Area Start ##### -->
+    <section class="contact-information-area">
+        <div class="container">
+            <div class="row">
 
-    </div>
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-            <a href="index.html">Home</a>
-        </li>
-        <li class="breadcrumb-item active">Contact</li>
-    </ol>
-    <!-- //banner-text -->
-    <!-- contact -->
-    <section class="banner-bottom-w3ls pt-lg-5 pt-md-3 pt-3">
-        <div class="inner-sec-wthreelayouts pt-md-5 pt-md-3 pt-3">
-            <h2 class="heading-agileinfo text-center  mb-4">Get In Touch</h2>
-            @if(Session::has('flash_message'))
-                <div class="alert alert-success">{{Session::get('flash_message')}}
-                </div>
-            @endif
-            <div class="container pt-sm-5">
-                <div class="address row mb-5">
-                    <div class="col-lg-6 address-grid-w3l">
-                        <div class="row address-info">
-                            <div class="col-3 address-left text-center">
-                                <span class="fa fa-map"></span>
-                            </div>
-                            <div class="col-9 address-right text-left">
-                                <h6 class="ad-info text-uppercase mb-2">Address</h6>
-                                <p> California, USA
-
-                                </p>
-                            </div>
+                <!-- Single Contact Information -->
+                <div class="col-12 col-lg-12">
+                    <div class="single-contact-information mb-100">
+                        <div class="section-text">
+                            <h3>Magic Bandhan</h3>
+                            <p>For any query fell free to contact us.</p>
                         </div>
-                    </div>
-                    <div class="col-lg-6 address-grid-w3l">
-                        <div class="row address-info">
-                            <div class="col-3 address-left text-center">
-                                <span class="fa fa-envelope"></span>
-                            </div>
-                            <div class="col-9 address-right text-left">
-                                <h6 class="ad-info text-uppercase mb-2">Email</h6>
-                                <p>Email :
-                                    <a href="mailto:dainikdaan@gmail.com"> dainikdaan@gmail.com</a>
-                                </p>
-                            </div>
-
+                        <!-- Single Contact Information -->
+                        <div class="contact-content d-flex">
+                            <p>Address</p>
+                            <p>www.magicbandhan.com</p>
                         </div>
-                    </div>
-{{--                    <div class="col-lg-4 address-grid-w3l">--}}
-{{--                        <div class="row address-info">--}}
-{{--                            <div class="col-3 address-left text-center">--}}
-{{--                                <span class="fa fa-mobile"></span>--}}
-{{--                            </div>--}}
-{{--                            <div class="col-9 address-right text-left">--}}
-{{--                                <h6 class="ad-info text-uppercase mb-2">Phone</h6>--}}
-{{--                                <p>+1 234 567 8901</p>--}}
-
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-                </div>
-            </div>
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-6 map">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d423286.27404345275!2d-118.69191921441556!3d34.02016130939095!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c75ddc27da13%3A0xe22fdf6f254608f4!2sLos+Angeles%2C+CA%2C+USA!5e0!3m2!1sen!2sin!4v1522474296007" allowfullscreen></iframe>
-
-                    </div>
-                    <div class="col-md-6 main_grid_contact">
-                        <div class="form">
-                            <h4 class="mb-4 text-left">Send us a message</h4>
-                            <form action="{{route('contact.storeQuery')}}" method="post">
-                                {{csrf_field()}}
-                                <div class="form-group">
-                                    <label class="my-2">Name</label>
-                                    <input class="form-control" type="text" name="name" placeholder="" required="">
-                                </div>
-                                <div class="form-group">
-                                    <label>Email</label>
-                                    <input class="form-control" type="email" name="email" placeholder="" required="">
-                                </div>
-                                <div class="form-group">
-                                    <label>Message</label>
-                                    <textarea id="textarea" placeholder="" name="message"></textarea>
-                                </div>
-                                <div class="input-group1">
-                                    <button class="form-control" type="submit">Submit</button>
-                                </div>
-                            </form>
+                        <!-- Single Contact Information -->
+                        <div class="contact-content d-flex">
+                            <p>Phone</p>
+                            <p>Coming Soon...</p>
+                        </div>
+                        <!-- Single Contact Information -->
+                        <div class="contact-content d-flex">
+                            <p>E-mail</p>
+                            <p>magicbandhan@gmail.com </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- //contact -->
+    <!-- ##### Contact Area End ##### -->
+
+    <!-- ##### Contact Form Area Start ##### -->
+    <section class="contact-form-area mb-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-heading">
+                        <div class="line-"></div>
+                        <h2>Get in touch</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <!-- Contact Form -->
+                    <form action="{{route('contact.storeQuery')}}" method="post">
+                        @csrf
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <input type="text" class="form-control" name="name" placeholder="Your Name" required>
+                            </div>
+                            <div class="col-lg-4">
+                                <input type="email" class="form-control" name="email" placeholder="E-mail" required>
+                            </div>
+                            <div class="col-lg-4">
+                                <input type="text" class="form-control" name="subject" placeholder="Subject" required>
+                            </div>
+                            <div class="col-12">
+                                <textarea name="message" class="form-control" id="message" cols="30" rows="10" placeholder="Message" required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn palatin-btn mt-50">Send Message</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ##### Contact Form Area End ##### -->
+
+    <!-- ##### Google Maps ##### -->
+    <div class="map-area mb-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d22236.40558254599!2d-118.25292394686001!3d34.057682914027104!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c75ddc27da13%3A0xe22fdf6f254608f4!2z4Kay4Ka4IOCmj-CmnuCnjeCmnOCnh-CmsuCnh-CmuCwg4KaV4KeN4Kav4Ka-4Kay4Ka_4Kar4KeL4Kaw4KeN4Kao4Ka_4Kav4Ka84Ka-LCDgpq7gpr7gprDgp43gppXgpr_gpqgg4Kav4KeB4KaV4KeN4Kak4Kaw4Ka-4Ka34KeN4Kaf4KeN4Kaw!5e0!3m2!1sbn!2sbd!4v1532328708137" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

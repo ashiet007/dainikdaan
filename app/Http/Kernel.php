@@ -62,6 +62,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'roles' => \App\Http\Middleware\CheckRole::class,
         'status' => \App\Http\Middleware\CheckStatus::class,
+        'sweetalert' => \UxWeb\SweetAlert\ConvertMessagesIntoSweetAlert::class,
     ];
 
     /**

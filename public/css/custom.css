@@ -1,21 +1,114 @@
-/* your styles go here */
-.text-uppercase {
-    letter-spacing: 0.0em;
+.remember{
+    padding-left: 15px;
 }
-.news-content{
+.section-padding-0-100 {
+    padding-top: 0;
+    padding-bottom: 0px;
+}
+@media only screen and (max-width: 767px)
+{
+    .breadcumb-area {
+        height: 240px;
+    }
+    .section-padding-0-100 {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+}
+.error-help-block{
+    color: #cb8670;
+}
+.bg-color{
+    background-color: #cb8670;
+    padding: 5px;
+}
+.modal-header {
+    background-color: #cb8670;
+    justify-content: center;
+}
+.modal-title {
+    color: white;
+    font-weight: 900;
+}
+.modal-content {
+    border: 2px solid #cb8670;
+}
+.modal-footer {
+    border-top: 1px solid #cb8670;
+    background-color: #cb8670;
+}
+#verifyOtp{
+    color: #f8f9fa;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+#verifyOtp:hover {
+    color: #6c757d;
+    font-weight: 900;
+    background-color: #f8f9fa;
+    border-color: #cb8670;
+}
+#resend{
+    color: #cb8670;
+    background-color: #f8f9fa;
+    border-color: #cb8670;
+}
+#resend:hover {
     color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
 }
-.banner{
-    max-height: 400px;
+.modal-dialog {
+    margin-top: 150px;
 }
-.banner-text {
-    padding-top: 120px;
+.backend-dashboard{
+    height: 150px;
 }
-
-.text-gray {
-    color: #212529;
+.card-header{
+    background-color: #cb8670;
+    color: #ffffff;
 }
-
-.text-muted {
-    color: #212529!important;
+.card-header h2{
+    font-weight: bold;
+}
+.card{
+    border: 2px solid #cb8670;
+}
+.custom-icon{
+    font-size: -webkit-xxx-large;
+    color: #cb8670;
+}
+.theme-color{
+    color: #cb8670;
+}
+.theme-bg-color{
+    background-color: #cb8670;
+    color: #ffffff;
+}
+.custom-button{
+    padding: 0px;
+}
+.table-bg-color{
+    background-color: #f3d6cd;
+    border-color: #cb8670!important;
+}
+@media (min-width: 1200px)
+{
+    .admin-navbar {
+        max-width: 1280px;
+    }
+}
+/*.card-body {*/
+/*    background: antiquewhite;*/
+/*}*/
+/*.single-accordion .accordion-content {*/
+/*    background: antiquewhite;*/
+/*}*/
+.container-padding{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.single-accordion .accordion-content {
+    padding-left: 0px;
+    padding-right: 0px;
 }

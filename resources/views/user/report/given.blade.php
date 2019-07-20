@@ -3,7 +3,7 @@
 @section('content')
     <section class="py-5 col-md-12">
         <div class="container-fluid">
-            <div class="container">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header text-center">
                         <h2 class="h6 text-uppercase mb-0">Give Help Report</h2>
@@ -19,7 +19,7 @@
                                 <tbody>
                                 @foreach($giveHelps as $item)
                                     <tr>
-                                        <td>{{ $loop->iteration or $item->id }}</td>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->amount }}</td><td class="text-capitalize">{{ $item->status }}</td>
                                         <td>{{ $item->created_at->format('d, M Y h:i:s A') }}</td>
                                         @if(count($item->getHelps) >= 1 )

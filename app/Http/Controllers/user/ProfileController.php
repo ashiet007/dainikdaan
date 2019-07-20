@@ -16,14 +16,16 @@ class ProfileController extends Controller
     public function viewProfile()
     {
         $id = Auth::User()->id;
-        $userDetail = User::with('userDetails.userState','userDetails.userDistrict','userDetails.userBank')->where('id',$id)->firstOrFail();
+        $user = new User;
+        $userDetail = $user->getUserDetails($id);
         return view('user.profile.viewProfile', compact('userDetail'));
     }
 
     public function viewSponsor()
     {
         $sponsorId = Auth::User()->sponsor_id;
-        $sponsorDetails = User::with('userDetails')->where('user_name',$sponsorId)->firstOrFail();
+        $user = new User;
+        $sponsorDetails = $user->getSponsorDetails($sponsorId);
         return view('user.profile.sponsor', compact('sponsorDetails'));
     }
 
@@ -55,16 +57,19 @@ class ProfileController extends Controller
                 $userPassword->update([
                     'password' => $requestData['password']
                 ]);
-                return redirect()->back()->with('flash_message','Password updated successfully');
+                alert()->success('Password updated successfully', 'Success')->persistent("Close");
+                return redirect()->back();
             }
             catch (\Illuminate\Database\QueryException $e)
             {
-                return redirect()->back()->withErrors($e->getMessage())->withInput();
+                alert()->error($e->getMessage(), 'Error')->persistent("Close");
+                return redirect()->back()->withInput();
             }
         }
         else
         {
-            return redirect()->back()->withErrors('Current Password is Incorrect')->withInput();
+            alert()->error('Current Password is Incorrect', 'Error')->persistent("Close");
+            return redirect()->back()->withInput();
         }
 
     }

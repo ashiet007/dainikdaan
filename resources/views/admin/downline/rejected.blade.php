@@ -32,32 +32,29 @@
                                 <tr>
                                     <th>Sr. No.</th>
                                     <th>Name</th>
-                                    <th>Email</th>
+                                    <th>Username</th>
                                     <th>Mobile Number</th>
                                     <th>Date of Joining</th>
                                     <th>Sponsor ID</th>
                                     <th>Rejected Date</th>
                                 </tr>
                                 </thead>
+                                <tbody>
                                 @if(!is_null($users))
                                     @foreach($users as $user)
-                                        <tbody>
                                         <tr>
-                                            <td>{{ $loop->iteration or $item->id }}</td>
+                                            <td>{{ $loop->iteration }}</td>
                                             <td>{{ $user->name }}</td>
-                                            <td>{{ $user->email }}</td>
+                                            <td>{{ $user->user_name }}</td>
                                             <td>{{ $user->userDetails->mob_no }}</td>
                                             <td>{{ $user->created_at->format('d, H Y h:i:s A') }}</td>
                                             <td>{{ $user->sponsor_id }}</td>
                                             <td>{{ $user->updated_at->format('d, H Y h:i:s A') }}</td>
                                         </tr>
-                                        </tbody>
                                     @endforeach
                                 @endif
+                                </tbody>
                             </table>
-                            @if(!is_null($users))
-                                <div class="pagination"> {!! $users->appends(['user_name' => Request::get('user_name')])->render() !!} </div>
-                            @endif
                         </div>
                     </div>
                 </div>

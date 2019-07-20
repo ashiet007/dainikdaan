@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','user_name','status','sponsor_id','identity'
+        'name', 'email', 'password','user_name','status','sponsor_id','identity','pool_no'
     ];
 
     /**
@@ -56,7 +56,7 @@ class User extends Authenticatable
         return $this->hasMany('App\GetHelp', 'user_id');
     }
 
-    public function userFunds()
+    public function userBonus()
     {
         return $this->hasMany('App\UserFund','user_id');
     }
@@ -64,6 +64,70 @@ class User extends Authenticatable
     public function userPreStatus()
     {
         return $this->hasOne('App\UserPreStatus','user_id');
+    }
+
+    public function singleLineIncome()
+    {
+        return $this->hasOne('App\CompanyPool','user_id');
+    }
+
+    /************ Scopes *************/
+    public function scopeReal($query)
+    {
+        return $query->where('identity','real');
+    }
+
+    public function scopePending($query)
+    {
+        return $query->where('status','pending');
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status','active');
+    }
+
+    public function scopeBlocked($query)
+    {
+        return $query->where('status','blocked');
+    }
+
+    public function scopeRejected($query)
+    {
+        return $query->where('status','rejected');
+    }
+
+    /*********** Queries ********************/
+
+    public function getUserDetails($userId)
+    {
+        return $this->with('userDetails.userState','userDetails.userDistrict','userDetails.userBank')                    ->where('id',$userId)
+                    ->first();
+    }
+
+    public function getSponsorDetails($sponsorId)
+    {
+        return $this->with('userDetails')
+                    ->where('user_name',$sponsorId)
+                    ->first();
+    }
+
+    public function getRegisteredUser($username)
+    {
+        return $this->with('userDetails.userState','userDetails.userDistrict')
+                    ->where('sponsor_id',$username)
+                    ->pending()
+                    ->real()
+                    ->get();
+    }
+
+    public function getActiveUser($username)
+    {
+        return $this->with('userDetails.userState','userDetails.userDistrict')
+                    ->where('sponsor_id',$username)
+                    ->active()
+                    ->real()
+                    ->get();
     }
 
 }

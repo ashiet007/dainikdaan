@@ -18,14 +18,13 @@ class JoiningController extends Controller
     public function index(Request $request)
     {
         $requestData = $request->all();
-        $perPage = 100;
         if(!empty($requestData))
         {
             $users = User::with('userDetails')
                      ->whereDate('created_at', '>=', $requestData['start_date'])
                      ->whereDate('created_at', '<=', $requestData['end_date'])
                      ->orderBy('created_at', 'DESC')  
-                     ->paginate($perPage);
+                     ->get();
             return view('admin.joining.index',compact('users'));
         }     
         else
@@ -38,7 +37,9 @@ class JoiningController extends Controller
     public function newJoining()
     {
         $users = User::with('userDetails','giveHelps')
-                            ->get();
+                        ->real()
+                        ->pending()
+                        ->get();
         return view('admin.joining.newJoining',compact('users'));
     }
 }

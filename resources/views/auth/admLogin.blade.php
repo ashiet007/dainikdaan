@@ -4,104 +4,128 @@
     <title>Dainik Daan:Admin Login</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="{{asset('images/icons/favicon.ico')}}"/>
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{{asset('vendor/bootstrap/css/bootstrap.min.css')}}">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{{asset('fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{{asset('fonts/Linearicons-Free-v1.0.0/icon-font.min.css')}}">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{{asset('vendor/animate/animate.css')}}">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{{asset('vendor/css-hamburgers/hamburgers.min.css')}}">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{{asset('vendor/animsition/css/animsition.min.css')}}">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{{asset('vendor/select2/select2.min.css')}}">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{{asset('vendor/daterangepicker/daterangepicker.css')}}">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{{asset('css/util.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('css/main.css')}}">
-    <!--===============================================================================================-->
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+        .login-page {
+            width: 360px;
+            padding: 8% 0 0;
+            margin: auto;
+        }
+        .form {
+            position: relative;
+            z-index: 1;
+            background: #FFFFFF;
+            max-width: 360px;
+            margin: 0 auto 100px;
+            padding: 45px;
+            text-align: center;
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+        }
+        .form input {
+            font-family: "Roboto", sans-serif;
+            outline: 0;
+            background: #f2f2f2;
+            width: 100%;
+            border: 0;
+            margin: 0 0 15px;
+            padding: 15px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        .form button {
+            font-family: "Roboto", sans-serif;
+            text-transform: uppercase;
+            outline: 0;
+            background: #cb8670;
+            width: 100%;
+            border: 0;
+            padding: 15px;
+            color: #FFFFFF;
+            font-size: 14px;
+            -webkit-transition: all 0.3 ease;
+            transition: all 0.3 ease;
+            cursor: pointer;
+        }
+        .form button:hover,.form button:active,.form button:focus {
+            background: #cb8670;
+        }
+        .form .message {
+            margin: 15px 0 0;
+            color: #b3b3b3;
+            font-size: 12px;
+        }
+        .form .message a {
+            color: #cb8670;
+            text-decoration: none;
+        }
+        .form .register-form {
+            display: none;
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        .container:before, .container:after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+        .container .info {
+            margin: 50px auto;
+            text-align: center;
+        }
+        .container .info h1 {
+            margin: 0 0 15px;
+            padding: 0;
+            font-size: 36px;
+            font-weight: 300;
+            color: #1a1a1a;
+        }
+        .container .info span {
+            color: #4d4d4d;
+            font-size: 12px;
+        }
+        .container .info span a {
+            color: #000000;
+            text-decoration: none;
+        }
+        .container .info span .fa {
+            color: #EF3B3A;
+        }
+        body {
+            background: #cb8670; /* fallback for old browsers */
+            background: -webkit-linear-gradient(right, #cb8670, #cb8670);
+            background: -moz-linear-gradient(right, #cb8670, #cb8670);
+            background: -o-linear-gradient(right, #cb8670, #cb8670);
+            background: linear-gradient(to left, #cb8670, #cb8670);
+            font-family: "Roboto", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
 </head>
 <body>
-
-<div class="limiter">
-    <div class="container-login100">
-        <div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
-            <form class="login100-form validate-form flex-sb flex-w" action="{{route('admin.authenticate')}}" method="post">
-                {{csrf_field()}}
-					<span class="login100-form-title p-b-32">
-						Account Login
-					</span>
-
-                <span class="txt1 p-b-11">
-						Username
-					</span>
-                <div class="wrap-input100 validate-input m-b-36" data-validate = "Username is required">
-                    <input class="input100" type="text" name="user_name" >
-                    <span class="focus-input100"></span>
-                </div>
-
-                <span class="txt1 p-b-11">
-						Password
-					</span>
-                <div class="wrap-input100 validate-input m-b-12" data-validate = "Password is required">
-						<span class="btn-show-pass">
-							<i class="fa fa-eye"></i>
-						</span>
-                    <input class="input100" type="password" name="password" >
-                    <span class="focus-input100"></span>
-                </div>
-
-                <div class="flex-sb-m w-full p-b-48">
-                    <div class="contact100-form-checkbox">
-                        <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
-                        <label class="label-checkbox100" for="ckb1">
-                            Remember me
-                        </label>
-                    </div>
-
-                    <div>
-                        <a href="#" class="txt3">
-                            Forgot Password?
-                        </a>
-                    </div>
-                </div>
-
-                <div class="container-login100-form-btn">
-                    <button class="login100-form-btn">
-                        Login
-                    </button>
-                </div>
-
-            </form>
-        </div>
+<div class="login-page">
+    <div class="form">
+        <form class="login-form" action="{{route('admin.authenticate')}}" method="post" id="loginform">
+            {{csrf_field()}}
+            <input type="text" name="user_name" placeholder="username"  required/>
+            <input type="password" name="password" placeholder="password"  required/>
+            <button>login</button>
+            <p class="message">Not registered? <a href="#">Create an account</a></p>
+        </form>
     </div>
 </div>
-
-
-<div id="dropDownSelect1"></div>
-
-<!--===============================================================================================-->
-<script src="{{asset('vendor/jquery/jquery-3.2.1.min.js')}}"></script>
-<!--===============================================================================================-->
-<script src="{{asset('vendor/animsition/js/animsition.min.js')}}"></script>
-<!--===============================================================================================-->
-<script src="{{asset('vendor/bootstrap/js/popper.js')}}"></script>
-<script src="{{asset('vendor/bootstrap/js/bootstrap.min.js')}}"></script>
-<!--===============================================================================================-->
-<script src="{{asset('vendor/select2/select2.min.js')}}"></script>
-<!--===============================================================================================-->
-<script src="{{asset('vendor/daterangepicker/moment.min.js')}}"></script>
-<script src="{{asset('vendor/daterangepicker/daterangepicker.js')}}"></script>
-<!--===============================================================================================-->
-<script src="{{asset('vendor/countdowntime/countdowntime.js')}}"></script>
-<!--===============================================================================================-->
-<script src="{{asset('js/main.js')}}"></script>
-
+<!-- container-scroller -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+{!! $validator->selector('#loginform') !!}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+@include('sweet::alert')
 </body>
 </html>

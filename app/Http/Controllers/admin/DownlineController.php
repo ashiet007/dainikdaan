@@ -15,7 +15,6 @@ class DownlineController extends Controller
     public function totalDownline(Request $request)
     {
         $requestData = $request->get('user_name');
-        $perPage = 100;
         $username = User::pluck('user_name','user_name')->toArray();
         $teamDetails = null;
         if(!empty($requestData))
@@ -30,14 +29,13 @@ class DownlineController extends Controller
     public function directTeam(Request $request)
     {
         $requestData = $request->get('user_name');
-        $perPage = 100;
         $username = User::pluck('user_name','user_name')->toArray();
         $teamDetails = null;
         if(!empty($requestData))
         {
             $teamDetails = User::with('UserDetails')
                          ->where('sponsor_id', '=', $requestData)  
-                         ->paginate($perPage);
+                         ->get();
             return view('admin.downline.direct',compact('teamDetails','username'));
         }
         else{
@@ -49,23 +47,22 @@ class DownlineController extends Controller
     public function rejectedMembers(Request $request)
     {
         $requestData = $request->get('user_name');
-        $perPage = 100;
         $username = User::pluck('user_name','user_name')->toArray();
         if(!empty($requestData))
         {
             $users = User::with('UserDetails')
                      ->where('user_name', '=', $requestData)
-                     ->where('status', '=', 'rejected' )
+                     ->rejected()
                      ->orderBy('updated_at','DESC')  
-                     ->paginate($perPage);
+                     ->get();
             return view('admin.downline.rejected',compact('users','username'));
         }     
         else
         {
-            $users = User::with('UserProfiles')
-                     ->where('status', '=', 'rejected' )
+            $users = User::with('UserDetails')
+                     ->rejected()
                      ->orderBy('updated_at','DESC')  
-                     ->paginate($perPage);
+                     ->get();
             return view('admin.downline.rejected',compact('users','username'));
         }
       }
@@ -73,23 +70,22 @@ class DownlineController extends Controller
     public function blockedMembers(Request $request)
     {
         $requestData = $request->get('user_name');
-        $perPage = 100;
         $username = User::pluck('user_name','user_name')->toArray();
         if(!empty($requestData))
         {
             $users = User::with('UserDetails')
                      ->where('user_name', '=', $requestData)
-                     ->where('status', '=', 'blocked' )
+                     ->blocked()
                      ->orderBy('updated_at','DESC')  
-                     ->paginate($perPage);
+                     ->get();
             return view('admin.downline.blocked',compact('users','username'));
         }     
         else
         {
             $users = User::with('UserDetails')
-                     ->where('status', '=', 'blocked' )
+                     ->blocked()
                      ->orderBy('updated_at','DESC')  
-                     ->paginate($perPage);
+                     ->get();
             return view('admin.downline.blocked',compact('users','username'));
         }
     }

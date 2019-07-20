@@ -3,7 +3,7 @@
 @section('content')
 <section class="py-5 col-md-12">
     <div class="container-fluid">
-        <div class="container">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header text-center">
                     <h2 class="h6 text-uppercase mb-0">Income Report</h2>
@@ -39,7 +39,7 @@
                                             <div class="modal-body">
                                                 <div class="container">
                                                     <div class="alert alert-success">
-                                                        Working income withdrawal minimum 500 and maximum 2000 per day multiple of 500.
+                                                        Working income withdrawal minimum 500 and maximum 5000 per day multiple of 500.
                                                     </div>
                                                 </div>
                                                 <form action="{{route('income.workingWithrawal')}}" method="post">
@@ -87,7 +87,7 @@
                             @foreach($getHelps as $getHelp)
                                 <tbody>
                                 <tr>
-                                    <td>{{ $loop->iteration or $item->id }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $getHelp->amount }}</td>
                                     <td>{{ $getHelp->created_at->format('d, M Y h:i:s A') }}</td>
                                     <td>{{ $getHelp->status }}</td>

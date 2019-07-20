@@ -120,37 +120,6 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-group{{ $errors->has('mob_no') ? ' has-error' : '' }}">
-                                        <label for="mobile" class="col-md-6 control-label">Mobile Number
-                                            <span class="required">*</span>
-                                        </label>
-                                        <div class="col-md-12">
-                                            <input id="mobile" type="number" class="form-control" name="mob_no" value="{{ old('mob_no') }}" placeholder="10 Digit Numeric Only" required>
-
-                                            @if ($errors->has('mob_no'))
-                                                <span class="help-block">
-                                                    <strong class="text-danger">{{ $errors->first('mob_no') }}</strong>
-                                                </span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group{{ $errors->has('alternate_mob_no') ? ' has-error' : '' }}">
-                                        <label for="alternate-mobile-number" class="col-md-6 control-label">Alternate Mobile Number</label>
-                                        <div class="col-md-12">
-                                            <input id="alternate-mobile-number" type="number" class="form-control" name="alternate_mob_no" value="{{ old('alternate_mob_no') }}" placeholder="10 Digit Numeric Only">
-                                            @if ($errors->has('alternate_mob_no'))
-                                                <span class="help-block">
-                                                    <strong class="text-danger">{{ $errors->first('alternate_mob_no') }}</strong>
-                                                </span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>                           
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
                                     <div class="form-group{{ $errors->has('state_id') ? ' has-error' : '' }}">
                                         <label for="state_id" class="col-md-6 control-label">State
                                             <span class="required">*</span>
@@ -191,23 +160,21 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                        <label for="email" class="col-md-4 control-label">E-Mail Address
+                                    <div class="form-group{{ $errors->has('mob_no') ? ' has-error' : '' }}">
+                                        <label for="mobile" class="col-md-6 control-label">Mobile Number
                                             <span class="required">*</span>
                                         </label>
-
                                         <div class="col-md-12">
-                                            <input id="email" type="email" class="form-control text-style2" name="email" value="{{ old('email') }}" placeholder="E-Mail Address" required>
+                                            <input id="mobile" type="number" class="form-control" name="mob_no" value="{{ old('mob_no') }}" placeholder="10 Digit Numeric Only" required>
 
-                                            @if ($errors->has('email'))
+                                            @if ($errors->has('mob_no'))
                                                 <span class="help-block">
-                                                    <strong class="text-danger">{{ $errors->first('email') }}</strong>
+                                                    <strong class="text-danger">{{ $errors->first('mob_no') }}</strong>
                                                 </span>
                                             @endif
                                         </div>
                                     </div>
                                 </div>
-                                
                             </div>
                         <h5 class="card-title font-weight-bold text-uppercase">Payment Details</h5>
                             <div class="row">
@@ -388,7 +355,7 @@
             }
         });
         $.ajax({
-            url: "{{ route('home.getDistricts') }}",
+            url: "{{ route('register.getDistricts') }}",
             method: 'post',
             data: {
                 state_id: stateId
@@ -420,7 +387,7 @@
             }
         });
         $.ajax({
-            url: "{{ route('home.getSponsorDetails') }}",
+            url: "{{ route('register.getSponsorDetails') }}",
             method: 'post',
             data: {
                 sponsorId: sponsorId

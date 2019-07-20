@@ -36,7 +36,7 @@
                                 <tbody>
                                 @foreach($gethelps as $item)
                                     <tr>
-                                        <td>{{ $loop->iteration or $item->id }}</td>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->user->name }}</td><td>{{ $item->user->user_name }}</td><td>{{ $item->amount }}</td><td class="text-capitalize">{{ $item->status }}</td><td class="text-capitalize">{{ $item->type }}</td><td>{{ $item->created_at }}</td>
                                         <td>
 {{--                                            <a href="{{ url('/admin/get-helps/' . $item->id) }}" title="View GetHelp"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>--}}
@@ -115,7 +115,6 @@
                                 @endforeach
                                 </tbody>
                             </table>
-                            <div class="pagination-wrapper"> {!! $gethelps->appends(['status'=> Request::get('status'), 'search' => Request::get('search')])->render() !!} </div>
                         </div>
                     </div>
                 </div>

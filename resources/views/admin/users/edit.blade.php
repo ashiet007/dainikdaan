@@ -53,7 +53,7 @@
             }
         });
         $.ajax({
-            url: "{{ route('home.getDistricts') }}",
+            url: "{{ route('register.getDistricts') }}",
             method: 'post',
             data: {
                 state_id: stateId
@@ -85,7 +85,7 @@
             }
         });
         $.ajax({
-            url: "{{ route('home.getSponsorDetails') }}",
+            url: "{{ route('register.getSponsorDetails') }}",
             method: 'post',
             data: {
                 sponsorId: sponsorId

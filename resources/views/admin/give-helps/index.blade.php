@@ -115,7 +115,6 @@
                                 @endforeach
                                 </tbody>
                             </table>
-                            <div class="pagination-wrapper"> {!! $givehelps->appends(['status'=> Request::get('status'), 'search' => Request::get('search')])->render() !!} </div>
                         </div>
                     </div>
                 </div>

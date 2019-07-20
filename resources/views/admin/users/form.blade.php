@@ -36,37 +36,6 @@
 </div>
 <div class="row">
     <div class="col-md-6">
-        <div class="form-group{{ $errors->has('mob_no') ? ' has-error' : '' }}">
-            <label for="mobile" class="col-md-6 control-label">Mobile
-                <span class="required">*</span>
-            </label>
-            <div class="col-md-12">
-                <input id="mobile" type="text" class="form-control" name="mob_no" value="{{ $user->userDetails['mob_no'] }}" placeholder="10 Digit Numeric Only" required>
-
-                @if ($errors->has('mob_no'))
-                    <span class="help-block">
-                                    <strong>{{ $errors->first('mob_no') }}</strong>
-                                </span>
-                @endif
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="form-group{{ $errors->has('alternate_mob_no') ? ' has-error' : '' }}">
-            <label for="alternate-mobile-number" class="col-md-6 control-label">Alternate Mobile Number</label>
-            <div class="col-md-12">
-                <input id="alternate-mobile-number" type="text" class="form-control" name="alternate_mob_no" value="{{ $user->userDetails['alternate_mob_no'] }}" placeholder="10 Digit Numeric Only">
-                @if ($errors->has('alternate_mob_no'))
-                    <span class="help-block">
-                                    <strong>{{ $errors->first('alternate_mob_no') }}</strong>
-                                </span>
-                @endif
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-6">
         <div class="form-group{{ $errors->has('state_id') ? ' has-error' : '' }}">
             <label for="state_id" class="col-md-6 control-label">State
                 <span class="required">*</span>
@@ -81,8 +50,8 @@
 
                 @if ($errors->has('state_id'))
                     <span class="help-block">
-                                    <strong>{{ $errors->first('state_id') }}</strong>
-                                </span>
+                        <strong>{{ $errors->first('state_id') }}</strong>
+                    </span>
                 @endif
             </div>
         </div>
@@ -110,18 +79,17 @@
 </div>
 <div class="row">
     <div class="col-md-6">
-        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-            <label for="email" class="col-md-4 control-label">E-Mail Address
+        <div class="form-group{{ $errors->has('mob_no') ? ' has-error' : '' }}">
+            <label for="mobile" class="col-md-6 control-label">Mobile
                 <span class="required">*</span>
             </label>
-
             <div class="col-md-12">
-                <input id="email" type="email" class="form-control text-style2" name="email" value="{{ $user->email }}" placeholder="E-Mail Address" required>
+                <input id="mobile" type="text" class="form-control" name="mob_no" value="{{ $user->userDetails['mob_no'] }}" placeholder="10 Digit Numeric Only" required>
 
-                @if ($errors->has('email'))
+                @if ($errors->has('mob_no'))
                     <span class="help-block">
-                                    <strong>{{ $errors->first('email') }}</strong>
-                                </span>
+                        <strong>{{ $errors->first('mob_no') }}</strong>
+                    </span>
                 @endif
             </div>
         </div>
@@ -143,8 +111,8 @@
                 </select>
                 @if ($errors->has('bank_id'))
                     <span class="help-block">
-                                    <strong>{{ $errors->first('bank_id') }}</strong>
-                                </span>
+                        <strong>{{ $errors->first('bank_id') }}</strong>
+                    </span>
                 @endif
             </div>
         </div>
@@ -158,8 +126,8 @@
                 <input id="account-number" type="text" class="form-control" name="account_no" value="{{ $user->userDetails['account_no'] }}" placeholder="Enter Your Account Number">
                 @if ($errors->has('account_no'))
                     <span class="help-block">
-                                    <strong>{{ $errors->first('account_no') }}</strong>
-                                </span>
+                        <strong>{{ $errors->first('account_no') }}</strong>
+                    </span>
                 @endif
             </div>
         </div>

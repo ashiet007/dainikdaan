@@ -34,29 +34,26 @@
                                         <th>Level</th>
                                         <th>Username</th>
                                         <th>Name</th>
-                                        <th>Email</th>
                                         <th>Mobile Number</th>
                                         <th>Date of Joining</th>
                                         <th>Sponsor ID</th>
-                                        <th></th>
                                     </tr>
                                     </thead>
+                                    <tbody>
                                     @if(!is_null($teamDetails))
                                         @foreach($teamDetails as $teamDetail)
-                                            <tbody>
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $teamDetail->level }}</td>
                                                 <td>{{ $teamDetail->user_name }}</td>
                                                 <td>{{ $teamDetail->name }}</td>
-                                                <td>{{ $teamDetail->email }}</td>
                                                 <td>{{ $teamDetail->userDetails->mob_no }}</td>
                                                 <td>{{ $teamDetail->created_at->format('d, M Y h:i:s A') }}</td>
                                                 <td>{{ $teamDetail->sponsor_id }}</td>
                                             </tr>
-                                            </tbody>
                                         @endforeach
                                     @endif
+                                    </tbody>
                                 </table>
                             </div>
                         </div>

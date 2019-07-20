@@ -21,13 +21,18 @@ class FundController extends Controller
     public function addFund(Request $request)
     {
         $requestData =$request->all();
+        $requestData['type'] = 'credit';
+        $requestData['purpose'] = 'admin-added';
         UserFund::create($requestData);
-        return redirect()->back()->with('flash_message','Fund Added Successfully');
+        alert()->success('Fund Added Successfully', 'Success')->persistent("Close");
+        return redirect()->back();
     }
 
     public function fundList()
     {
         $fundsList = UserFund::with('user')
+            ->where('type','credit')
+            ->where('purpose','admin-added')
             ->orderBy('created_at','DESC')
             ->get();
         return view('admin.fund.list',compact('fundsList'));
